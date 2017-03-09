@@ -1,3 +1,7 @@
 * {
     font-family: 'Crimson Text', serif;
 }
+
+a { 
+    text-decoration: none;
+}

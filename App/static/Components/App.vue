@@ -2,8 +2,8 @@
     const randomcolor = require("randomcolor");
 
     //register card component
-    var Vue = require('vue')
     const Card = require("./Card.vue");
+    var Vue = require('vue');
     Vue.component('Card', Card);
 
     module.exports = {
@@ -75,9 +75,11 @@
                 <div class='kontact-title'>
                     Kontacts
                 </div>
+                <router-link to="/create">
                 <div class='kontact-add'>
                     +
                 </div>
+                </router-link>
             </div>
             <hr>
             <div class='kontact-filter-container'>
@@ -151,5 +153,5 @@
         }.kontact-card:hover .kontact-card-media-container{
             margin-left:0;
         }
-            
+    
 </style>

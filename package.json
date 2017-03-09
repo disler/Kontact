@@ -19,6 +19,7 @@
   "devDependencies": {
     "randomcolor": "^0.4.4",
     "vue": "^2.2.2",
+    "vue-router": "^2.3.0",
     "vueify": "^9.4.1"
   }
 }
