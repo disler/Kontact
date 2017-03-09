@@ -1,8 +1,13 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert(".kontact-wrapper{\n    max-width:1000px;\n    height:auto;\n    margin:0 auto 0 auto;\n}\n\n.kontact-header{\n    display: flex;\n    justify-content: space-between;\n}\n\n.kontact-title{\n    font-size:50px;\n    margin:5px;\n}\n\n.kontact-add{\n    border: 1px solid #eee;\n    box-shadow:2px 2px 7px #aaa; \n    width:50px;\n    height:50px;\n    font-size:30px;\n    text-align:center;\n    margin:15px;\n    cursor:pointer;\n}\n.kontact-filter-container{\n    width:100%;\n}.kontact-filter-container > input{\n    width:100%;\n    height:45px;\n    font-size:25px;\n    text-align:center;\n    border-radius:10px;\n    background-color: #ddd;\n    border:none;\n}\n.kontact-body-container{\n    width: 100%;\n    display:flex;\n    justify-content:space-around;\n    flex-wrap:wrap;\n}\n    .kontact-card{\n        width:200px;\n        height:250px;\n        margin:25px;\n        border-radius:10px;\n        box-shadow:2px 4px 10px #ccc;\n        overflow:hidden;\n        transition:.75s all ease;\n    }.kontact-card:hover{\n        opacity:.85;\n        margin-top:10px;\n    }.kontact-card:hover .kontact-card-media-container{\n        margin-left:0;\n    }\n        .kontact-card-img-container{\n            width:100px;\n            height:100px;\n            border-radius:50%;\n            overflow:hidden;\n            cursor:pointer;\n            margin: 10px auto 50px auto;\n        }.kontact-card-img-container > img{\n            width:inherit;\n            height:inherit;\n        }\n        .kontact-card-title-container{\n            width:100%;\n            text-align:center;\n            font-size:20px;\n            margin:10px 0 10px 0;\n            background-color:#4aa;\n            color:white;\n        }\n        .kontact-card-media-container{\n            margin-left:100%;\n            width:100%;\n            transition:margin .8s ease;\n            text-align:center;\n        }\n        .kontact-card-media-link{\n            margin:10px;\n        }.kontact-card-media-link > img{\n            width:35px;\n            height:35px;\n            cursor:pointer;\n        }")
+var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert(".kontact-wrapper{\n    max-width:1000px;\n    height:auto;\n    margin:0 auto 0 auto;\n}\n\n.kontact-header{\n    display: flex;\n    justify-content: space-between;\n}\n\n.kontact-title{\n    font-size:50px;\n    margin:5px;\n}\n\n.kontact-add{\n    border: 1px solid #eee;\n    box-shadow:2px 2px 7px #aaa; \n    width:50px; \n    height:50px;\n    font-size:30px;\n    text-align:center;\n    margin:15px;\n    cursor:pointer;\n}\n.kontact-filter-container{\n    width:100%;\n}.kontact-filter-container > input{\n    width:100%;\n    height:45px;\n    font-size:25px;\n    text-align:center;\n    border-radius:10px;\n    background-color: #ddd;\n    border:none;\n}\n.kontact-body-container{\n    width: 100%;\n    display:flex;\n    justify-content:space-around;\n    flex-wrap:wrap;\n}\n    .kontact-card{\n        width:200px;\n        height:250px;\n        margin:25px;\n        border-radius:10px;\n        box-shadow:2px 4px 10px #ccc;\n        overflow:hidden;\n        transition:.75s all ease;\n    }.kontact-card:hover{\n        opacity:.85;\n        margin-top:10px;\n    }.kontact-card:hover .kontact-card-media-container{\n        margin-left:0;\n    }")
 ;(function(){
 
 const randomcolor = require("randomcolor");
+
+//register card component
+var Vue = require('vue')
+const Card = require("./Card.vue");
+Vue.component('Card', Card);
 
 module.exports = {
     created(){
@@ -69,8 +74,8 @@ module.exports = {
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"kontact-wrapper"},[_c('div',{staticClass:"kontact-container"},[_vm._m(0),_vm._v(" "),_c('hr'),_vm._v(" "),_c('div',{staticClass:"kontact-filter-container"},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.sFilter),expression:"sFilter"}],attrs:{"id":"filter","placeholder":"Filter Kontacts"},domProps:{"value":(_vm.sFilter)},on:{"input":function($event){if($event.target.composing){ return; }_vm.sFilter=$event.target.value}}})]),_vm._v(" "),_c('div',{staticClass:"kontact-body-container"},_vm._l((_vm.Kontacts),function(kontact){return _c('div',{staticClass:"kontact-card",style:({backgroundColor:kontact.color})},[_vm._m(1,true),_vm._v(" "),_c('div',{staticClass:"kontact-card-title-container"},[_vm._v("\n                    "+_vm._s(kontact.name)+"\n                ")]),_vm._v(" "),_c('div',{staticClass:"kontact-card-media-container"},_vm._l((kontact.media),function(media){return _c('a',{staticClass:"kontact-card-media-link",attrs:{"href":media.link}},[_c('img',{attrs:{"src":media.name,"alt":""}})])}))])}))])])}
-__vue__options__.staticRenderFns = [function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"kontact-header"},[_c('div',{staticClass:"kontact-title"},[_vm._v("\n                Kontacts\n            ")]),_vm._v(" "),_c('div',{staticClass:"kontact-add"},[_vm._v("\n                +\n            ")])])},function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"kontact-card-img-container"},[_c('img',{attrs:{"src":"./static/img/person.jpg","alt":""}})])}]
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"kontact-wrapper"},[_c('div',{staticClass:"kontact-container"},[_vm._m(0),_vm._v(" "),_c('hr'),_vm._v(" "),_c('div',{staticClass:"kontact-filter-container"},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.sFilter),expression:"sFilter"}],attrs:{"id":"filter","placeholder":"Filter Kontacts"},domProps:{"value":(_vm.sFilter)},on:{"input":function($event){if($event.target.composing){ return; }_vm.sFilter=$event.target.value}}})]),_vm._v(" "),_c('div',{staticClass:"kontact-body-container"},_vm._l((_vm.Kontacts),function(kontact){return _c('div',{staticClass:"kontact-card",style:({backgroundColor:kontact.color})},[_c('Card',{attrs:{"kontact":kontact}})],1)}))])])}
+__vue__options__.staticRenderFns = [function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"kontact-header"},[_c('div',{staticClass:"kontact-title"},[_vm._v("\n                Kontacts\n            ")]),_vm._v(" "),_c('div',{staticClass:"kontact-add"},[_vm._v("\n                +\n            ")])])}]
 if (module.hot) {(function () {  var hotAPI = require("vueify/node_modules/vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
@@ -82,7 +87,32 @@ if (module.hot) {(function () {  var hotAPI = require("vueify/node_modules/vue-h
     hotAPI.rerender("data-v-0708b1c8", __vue__options__)
   }
 })()}
-},{"randomcolor":3,"vue":4,"vueify/lib/insert-css":5,"vueify/node_modules/vue-hot-reload-api":6}],2:[function(require,module,exports){
+},{"./Card.vue":2,"randomcolor":4,"vue":5,"vueify/lib/insert-css":6,"vueify/node_modules/vue-hot-reload-api":7}],2:[function(require,module,exports){
+var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert(".kontact-card-img-container{\n    width:100px;\n    height:100px;\n    border-radius:50%;\n    overflow:hidden;\n    cursor:pointer;\n    margin: 10px auto 50px auto;\n}.kontact-card-img-container > img{\n    width:inherit;\n    height:inherit;\n}\n.kontact-card-title-container{\n    width:100%;\n    text-align:center;\n    font-size:20px;\n    margin:10px 0 10px 0;\n    background-color:#4bb;\n    color:white;\n}\n.kontact-card-media-container{\n    margin-left:100%;\n    width:100%;\n    transition:margin .8s ease;\n    text-align:center;\n}\n.kontact-card-media-link{\n    margin:10px;\n}.kontact-card-media-link > img{\n    width:35px;\n    height:35px;\n    cursor:pointer;\n}")
+;(function(){
+
+module.exports = {
+    props : ['kontact']
+};
+
+})()
+if (module.exports.__esModule) module.exports = module.exports.default
+var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
+if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"kontact-card-template"},[_vm._m(0),_vm._v(" "),_c('div',{staticClass:"kontact-card-title-container"},[_vm._v("\n        "+_vm._s(_vm.kontact.name)+"\n    ")]),_vm._v(" "),_c('div',{staticClass:"kontact-card-media-container"},_vm._l((_vm.kontact.media),function(media){return _c('a',{staticClass:"kontact-card-media-link",attrs:{"href":media.link}},[_c('img',{attrs:{"src":media.name,"alt":""}})])}))])}
+__vue__options__.staticRenderFns = [function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"kontact-card-img-container"},[_c('img',{attrs:{"src":"./static/img/person.jpg","alt":""}})])}]
+if (module.hot) {(function () {  var hotAPI = require("vueify/node_modules/vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  module.hot.dispose(__vueify_style_dispose__)
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-d2d74c0e", __vue__options__)
+  } else {
+    hotAPI.reload("data-v-d2d74c0e", __vue__options__)
+  }
+})()}
+},{"vue":5,"vueify/lib/insert-css":6,"vueify/node_modules/vue-hot-reload-api":7}],3:[function(require,module,exports){
 var Vue = require('vue')
 var App = require('./Components/App.vue')
 new Vue({
@@ -91,7 +121,7 @@ new Vue({
     return createElement(App) 
   }
 }) 
-},{"./Components/App.vue":1,"vue":4}],3:[function(require,module,exports){
+},{"./Components/App.vue":1,"vue":5}],4:[function(require,module,exports){
 // randomColor by David Merfield under the CC0 license
 // https://github.com/davidmerfield/randomColor/
 
@@ -522,7 +552,7 @@ new Vue({
   return randomColor;
 }));
 
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 (function (process,global){
 /*!
  * Vue.js v2.2.2
@@ -7249,7 +7279,7 @@ setTimeout(function () {
 module.exports = Vue$2;
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"_process":7}],5:[function(require,module,exports){
+},{"_process":8}],6:[function(require,module,exports){
 var inserted = exports.cache = {}
 
 function noop () {}
@@ -7274,7 +7304,7 @@ exports.insert = function (css) {
   }
 }
 
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 var Vue // late bind
 var version
 var map = window.__VUE_HOT_MAP__ = Object.create(null)
@@ -7412,7 +7442,7 @@ exports.reload = tryWrap(function (id, options) {
   })
 })
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -7594,4 +7624,4 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}]},{},[2]);
+},{}]},{},[3]);

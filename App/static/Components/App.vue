@@ -1,6 +1,11 @@
 <script>
     const randomcolor = require("randomcolor");
 
+    //register card component
+    var Vue = require('vue')
+    const Card = require("./Card.vue");
+    Vue.component('Card', Card);
+
     module.exports = {
         created(){
             this.lstKontact = this.DecorateKontacts(this.lstKontact)
@@ -81,17 +86,7 @@
             </div>
             <div class="kontact-body-container">
                 <div class="kontact-card"  v-for="kontact in Kontacts" v-bind:style="{backgroundColor:kontact.color}">
-                    <div class="kontact-card-img-container">
-                        <img src="./static/img/person.jpg" alt="">
-                    </div>
-                    <div class="kontact-card-title-container">
-                        {{kontact.name}}
-                    </div>
-                    <div class="kontact-card-media-container">
-                        <a class="kontact-card-media-link" v-for="media in kontact.media" v-bind:href="media.link" >
-                            <img v-bind:src="media.name" alt=""> 
-                        </a>
-                    </div>
+                    <Card v-bind:kontact="kontact" />
                 </div>
             </div>
         </div>
@@ -118,7 +113,7 @@
     .kontact-add{
         border: 1px solid #eee;
         box-shadow:2px 2px 7px #aaa; 
-        width:50px;
+        width:50px; 
         height:50px;
         font-size:30px;
         text-align:center;
@@ -156,36 +151,5 @@
         }.kontact-card:hover .kontact-card-media-container{
             margin-left:0;
         }
-            .kontact-card-img-container{
-                width:100px;
-                height:100px;
-                border-radius:50%;
-                overflow:hidden;
-                cursor:pointer;
-                margin: 10px auto 50px auto;
-            }.kontact-card-img-container > img{
-                width:inherit;
-                height:inherit;
-            }
-            .kontact-card-title-container{
-                width:100%;
-                text-align:center;
-                font-size:20px;
-                margin:10px 0 10px 0;
-                background-color:#4aa;
-                color:white;
-            }
-            .kontact-card-media-container{
-                margin-left:100%;
-                width:100%;
-                transition:margin .8s ease;
-                text-align:center;
-            }
-            .kontact-card-media-link{
-                margin:10px;
-            }.kontact-card-media-link > img{
-                width:35px;
-                height:35px;
-                cursor:pointer;
-            }
+            
 </style>
