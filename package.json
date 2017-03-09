@@ -1,0 +1,23 @@
+{
+  "name": "kontact",
+  "version": "1.0.0",
+  "description": "A simple CRUD based contacts application demonstrating clean and intuitive app in vuejs and python.",
+  "main": "Server.js",
+  "scripts": {
+  	"dev" : "watchify -t vueify -e ./App/static/client.js -o ./App/static/build.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/disler/Kontact.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/disler/Kontact/issues"
+  },
+  "homepage": "https://github.com/disler/Kontact#readme",
+  "devDependencies": {
+    "vue": "^2.2.2",
+    "vueify": "^9.4.1"
+  }
+}
