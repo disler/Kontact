@@ -75,7 +75,7 @@
                 <div class='kontact-title'>
                     Kontacts
                 </div>
-                <router-link to="/create">
+                <router-link to="/modify">
                 <div class='kontact-add'>
                     +
                 </div>
