@@ -51,7 +51,9 @@ def Update(id):
     """
         Update a currently existing kontact record
     """
+    print(request.data)
     oNewKontact = WebUtil.ToJson(request.data)
+    
     oPreviousKontact = db.GetByID("tblKontact", id)
     print(oPreviousKontact)
     if(oPreviousKontact is not None):
@@ -77,4 +79,4 @@ def Delete(id):
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=5000, debug=True, threaded=True)

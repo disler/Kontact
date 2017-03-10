@@ -61,6 +61,21 @@ const store = new Vuex.Store({
           reject(error);
         });
       })
+    },
+    UpdateKontact({commit}, oKontact)
+    {
+      return new Promise( (resolve, reject) =>
+      {
+        fetch(`/kontacts/${oKontact.id}`, {
+          method : "PUT", 
+          body : JSON.stringify(oKontact) 
+        }).then( (response) => {
+          resolve(true);
+        }, (error) => {
+          console.error("error ", error);
+          reject(error);
+        });
+      });
     }
   }
 })

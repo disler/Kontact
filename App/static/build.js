@@ -67,7 +67,7 @@ if (module.hot) {(function () {  var hotAPI = require("vueify/node_modules/vue-h
     hotAPI.rerender("data-v-0708b1c8", __vue__options__)
   }
 })()}
-},{"./Card.vue":2,"randomcolor":6,"vue":8,"vueify/lib/insert-css":9,"vueify/node_modules/vue-hot-reload-api":10}],2:[function(require,module,exports){
+},{"./Card.vue":2,"randomcolor":7,"vue":9,"vueify/lib/insert-css":10,"vueify/node_modules/vue-hot-reload-api":11}],2:[function(require,module,exports){
 var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert(".kontact-card-img-container{\n    width:100px;\n    height:100px;\n    border-radius:50%;\n    overflow:hidden;\n    cursor:pointer;\n    margin: 10px auto 50px auto;\n}.kontact-card-img-container > img{\n    width:inherit;\n    height:inherit;\n}\n.kontact-card-title-container{\n    width:100%;\n    text-align:center;\n    font-size:20px;\n    margin:10px 0 10px 0;\n    background-color:#4bb;\n    color:white;\n}\n.kontact-card-media-container{\n    margin-left:100%;\n    width:100%;\n    transition:margin .8s ease;\n    text-align:center;\n}\n.kontact-card-media-link{\n    margin:10px;\n}.kontact-card-media-link > img{\n    width:35px;\n    height:35px;\n    cursor:pointer;\n}")
 ;(function(){
 
@@ -87,7 +87,7 @@ module.exports = {
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"kontact-card-template"},[_c('div',{staticClass:"kontact-card-img-container",on:{"click":function($event){_vm.ClickCard(_vm.kontact)}}},[_c('img',{attrs:{"src":"./static/img/person.jpg","alt":""}})]),_vm._v(" "),_c('div',{staticClass:"kontact-card-title-container"},[_vm._v("\n        "+_vm._s(_vm.kontact.firstname + ' ' + _vm.kontact.lastname)+"\n    ")]),_vm._v(" "),_c('div',{staticClass:"kontact-card-media-container"},_vm._l((_vm.kontact.media),function(media){return _c('a',{staticClass:"kontact-card-media-link",attrs:{"href":media.link}},[_c('img',{attrs:{"src":media.name,"alt":"alt"}})])}))])}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"kontact-card-template"},[_c('div',{staticClass:"kontact-card-img-container",on:{"click":function($event){_vm.ClickCard(_vm.kontact)}}},[_c('img',{attrs:{"src":"./static/img/person.jpg","alt":""}})]),_vm._v(" "),_c('div',{staticClass:"kontact-card-title-container"},[_vm._v("\n        "+_vm._s(_vm.kontact.firstname + ' ' + _vm.kontact.lastname)+"\n    ")]),_vm._v(" "),_c('div',{staticClass:"kontact-card-media-container"},_vm._l((_vm.kontact.media),function(media){return _c('a',{directives:[{name:"show",rawName:"v-show",value:(media.link != ''),expression:"media.link != ''"}],staticClass:"kontact-card-media-link",attrs:{"href":media.link}},[_c('img',{attrs:{"src":media.icon,"alt":"alt"}})])}))])}
 __vue__options__.staticRenderFns = []
 if (module.hot) {(function () {  var hotAPI = require("vueify/node_modules/vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -100,9 +100,11 @@ if (module.hot) {(function () {  var hotAPI = require("vueify/node_modules/vue-h
     hotAPI.rerender("data-v-d2d74c0e", __vue__options__)
   }
 })()}
-},{"vue":8,"vueify/lib/insert-css":9,"vueify/node_modules/vue-hot-reload-api":10}],3:[function(require,module,exports){
+},{"vue":9,"vueify/lib/insert-css":10,"vueify/node_modules/vue-hot-reload-api":11}],3:[function(require,module,exports){
 var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert(".modify-wrapper{\n    max-width:1000px;\n    height:auto;\n    margin:0 auto 0 auto;\n}\n\n.modify-header-container{\n    font-size:50px;\n    margin:5px;\n}\n.modify-content-container{\n    width:100%;\n    display:flex;\n    justify-content:space-between;\n    flex-wrap:wrap;\n}\n.modify-input-container{\n    width:49%;\n}.modify-input-container > input{\n    margin:0 0 25px 0;\n    width:100%;\n    height:50px;\n    font-size:24px;\n    border-radius:5px;\n    border:none;\n    border-bottom:1px solid #aaa;\n    border-left:1px solid #aaa;\n    padding:15px;\n}\n.modify-action-container{\n    display:flex;\n    justify-content:space-between;\n}\n\ninput, label{\n    display:block;\n}")
 ;(function(){
+
+const Util = require("../util");
 
 module.exports = {
     created(){
@@ -110,27 +112,62 @@ module.exports = {
         if(bCreateNotUpdate === false)
         {
             const oKontactToUpdate = this.$store.state.oKontactToUpdate;
-            this.$store.commit("ClearKontactReference");
             this.SetKontactToUpdate(oKontactToUpdate);
         }
     },
     data(){
         return {
-            firstname : "",
-            lastname : "",
-            dateofbirth : "",
-            zipcode : "",
-            facebook:"",
-            twitter:"",
-            linkedin:"",
-            youtube:"",
-            whatsapp:""
+            oKontact : {
+                id : -1,
+                firstname : "",
+                lastname : "",
+                "date of birth" : "",
+                "zip-code" : "",
+                media : {
+                    "facebook" : {
+                        name : "facebook",
+                        link : ""
+                    },
+                    "twitter" : {
+                        name : "twitter",
+                        link : ""
+                    },
+                    "linkedin" : {
+                        name : "linkedin",
+                        link : ""
+                    },
+                    "youtube" : {
+                        name : "youtube",
+                        link : ""
+                    },
+                    "whatsapp" : {
+                        name : "whatsapp",
+                        link : ""
+                    },
+                }
+            },
+            
         }
     },
     methods: {
         SetKontactToUpdate(oKontact)
         {
-            //this.firstname = oKontact.
+            this.oKontact = Util.DeepMerge({}, this.oKontact, oKontact);
+            console.log('this.oKontact', this.oKontact);
+        },
+        Done()
+        {
+            this.$store.commit("ClearKontactReference");
+            this.$router.push({path : "/"});
+        },
+        Save()
+        {
+            let oKontactToModify = this.oKontact;
+            this.$store.dispatch("UpdateKontact", oKontactToModify).then( (success) => {
+                console.log("Successfully saved");
+            }, (error) => {
+                console.error("error updating kontact", error);
+            });
         }
     }
 }
@@ -139,8 +176,8 @@ module.exports = {
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"modify-template"},[_c('div',{staticClass:"modify-wrapper"},[_c('div',{staticClass:"modify-container"},[_c('div',{staticClass:"modify-header-container"},[_vm._v("\n                Kontacts\n            ")]),_vm._v(" "),_c('hr'),_vm._v(" "),_vm._m(0),_vm._v(" "),_c('div',{staticClass:"modify-action-container"},[_vm._m(1),_vm._v(" "),_c('div',{staticClass:"modify-action-right-container"},[_c('button',{staticClass:"btn green"},[_vm._v("Save")]),_vm._v(" "),_c('router-link',{attrs:{"to":"/"}},[_c('button',{staticClass:"btn grey"},[_vm._v("Done")])])],1)])])])])}
-__vue__options__.staticRenderFns = [function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"modify-content-container"},[_c('div',{staticClass:"modify-input-container"},[_c('label',{attrs:{"for":"firstname"}},[_vm._v("First Name")]),_vm._v(" "),_c('input',{attrs:{"id":"firstname","type":"text","placeholder":"First Name"}})]),_vm._v(" "),_c('div',{staticClass:"modify-input-container"},[_c('label',{attrs:{"for":"lastname"}},[_vm._v("Last Name")]),_vm._v(" "),_c('input',{attrs:{"id":"lastname","type":"text","placeholder":"Last Name"}})]),_vm._v(" "),_c('div',{staticClass:"modify-input-container"},[_c('label',{attrs:{"for":"dateofbirth"}},[_vm._v("Date of Birth")]),_vm._v(" "),_c('input',{attrs:{"id":"dateofbirth","type":"text","placeholder":"Date Of Birth"}})]),_vm._v(" "),_c('div',{staticClass:"modify-input-container"},[_c('label',{attrs:{"for":"zipcode"}},[_vm._v("Zip Code")]),_vm._v(" "),_c('input',{attrs:{"id":"zipcode","type":"text","placeholder":"Zip Code"}})]),_vm._v(" "),_c('div',{staticClass:"modify-input-container"},[_c('label',{attrs:{"for":"facebook"}},[_vm._v("Facebook")]),_vm._v(" "),_c('input',{attrs:{"id":"facebook","type":"text","placeholder":"Facebook"}})]),_vm._v(" "),_c('div',{staticClass:"modify-input-container"},[_c('label',{attrs:{"for":"twitter"}},[_vm._v("Twitter")]),_vm._v(" "),_c('input',{attrs:{"id":"twitter","type":"text","placeholder":"Twitter"}})]),_vm._v(" "),_c('div',{staticClass:"modify-input-container"},[_c('label',{attrs:{"for":"linkedin"}},[_vm._v("LinkedIn")]),_vm._v(" "),_c('input',{attrs:{"id":"linkedin","type":"text","placeholder":"LinkedIn"}})]),_vm._v(" "),_c('div',{staticClass:"modify-input-container"},[_c('label',{attrs:{"for":"youtube"}},[_vm._v("Youtube")]),_vm._v(" "),_c('input',{attrs:{"id":"youtube","type":"text","placeholder":"Youtube"}})]),_vm._v(" "),_c('div',{staticClass:"modify-input-container"},[_c('label',{attrs:{"for":"whatsapp"}},[_vm._v("WhatsApp")]),_vm._v(" "),_c('input',{attrs:{"id":"whatsapp","type":"text","placeholder":"WhatsApp"}})])])},function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"modify-action-left-container"},[_c('button',{staticClass:"btn red"},[_vm._v("Delete")])])}]
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"modify-template"},[_c('div',{staticClass:"modify-wrapper"},[_c('div',{staticClass:"modify-container"},[_c('div',{staticClass:"modify-header-container"},[_vm._v("\n                Kontacts\n            ")]),_vm._v(" "),_c('hr'),_vm._v(" "),_c('div',{staticClass:"modify-content-container"},[_c('div',{staticClass:"modify-input-container"},[_c('label',{attrs:{"for":"firstname"}},[_vm._v("First Name")]),_vm._v(" "),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.oKontact.firstname),expression:"oKontact.firstname"}],attrs:{"id":"firstname","type":"text","placeholder":"First Name"},domProps:{"value":(_vm.oKontact.firstname)},on:{"input":function($event){if($event.target.composing){ return; }_vm.oKontact.firstname=$event.target.value}}})]),_vm._v(" "),_c('div',{staticClass:"modify-input-container"},[_c('label',{attrs:{"for":"lastname"}},[_vm._v("Last Name")]),_vm._v(" "),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.oKontact.lastname),expression:"oKontact.lastname"}],attrs:{"id":"lastname","type":"text","placeholder":"Last Name"},domProps:{"value":(_vm.oKontact.lastname)},on:{"input":function($event){if($event.target.composing){ return; }_vm.oKontact.lastname=$event.target.value}}})]),_vm._v(" "),_c('div',{staticClass:"modify-input-container"},[_c('label',{attrs:{"for":"dateofbirth"}},[_vm._v("Date of Birth")]),_vm._v(" "),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.oKontact['date of birth']),expression:"oKontact['date of birth']"}],attrs:{"id":"dateofbirth","type":"text","placeholder":"Date Of Birth"},domProps:{"value":(_vm.oKontact['date of birth'])},on:{"input":function($event){if($event.target.composing){ return; }var $$exp = _vm.oKontact, $$idx = 'date of birth';if (!Array.isArray($$exp)){_vm.oKontact['date of birth']=$event.target.value}else{$$exp.splice($$idx, 1, $event.target.value)}}}})]),_vm._v(" "),_c('div',{staticClass:"modify-input-container"},[_c('label',{attrs:{"for":"zipcode"}},[_vm._v("Zip Code")]),_vm._v(" "),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.oKontact['zip-code']),expression:"oKontact['zip-code']"}],attrs:{"id":"zipcode","type":"text","placeholder":"Zip Code"},domProps:{"value":(_vm.oKontact['zip-code'])},on:{"input":function($event){if($event.target.composing){ return; }var $$exp = _vm.oKontact, $$idx = 'zip-code';if (!Array.isArray($$exp)){_vm.oKontact['zip-code']=$event.target.value}else{$$exp.splice($$idx, 1, $event.target.value)}}}})]),_vm._v(" "),_c('div',{staticClass:"modify-input-container"},[_c('label',{attrs:{"for":"facebook"}},[_vm._v("Facebook")]),_vm._v(" "),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.oKontact.media.facebook.link),expression:"oKontact.media.facebook.link"}],attrs:{"id":"facebook","type":"text","placeholder":"Facebook"},domProps:{"value":(_vm.oKontact.media.facebook.link)},on:{"input":function($event){if($event.target.composing){ return; }_vm.oKontact.media.facebook.link=$event.target.value}}})]),_vm._v(" "),_c('div',{staticClass:"modify-input-container"},[_c('label',{attrs:{"for":"twitter"}},[_vm._v("Twitter")]),_vm._v(" "),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.oKontact.media.twitter.link),expression:"oKontact.media.twitter.link"}],attrs:{"id":"twitter","type":"text","placeholder":"Twitter"},domProps:{"value":(_vm.oKontact.media.twitter.link)},on:{"input":function($event){if($event.target.composing){ return; }_vm.oKontact.media.twitter.link=$event.target.value}}})]),_vm._v(" "),_c('div',{staticClass:"modify-input-container"},[_c('label',{attrs:{"for":"linkedin"}},[_vm._v("LinkedIn")]),_vm._v(" "),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.oKontact.media.linkedin.link),expression:"oKontact.media.linkedin.link"}],attrs:{"id":"linkedin","type":"text","placeholder":"LinkedIn"},domProps:{"value":(_vm.oKontact.media.linkedin.link)},on:{"input":function($event){if($event.target.composing){ return; }_vm.oKontact.media.linkedin.link=$event.target.value}}})]),_vm._v(" "),_c('div',{staticClass:"modify-input-container"},[_c('label',{attrs:{"for":"youtube"}},[_vm._v("Youtube")]),_vm._v(" "),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.oKontact.media.youtube.link),expression:"oKontact.media.youtube.link"}],attrs:{"id":"youtube","type":"text","placeholder":"Youtube"},domProps:{"value":(_vm.oKontact.media.youtube.link)},on:{"input":function($event){if($event.target.composing){ return; }_vm.oKontact.media.youtube.link=$event.target.value}}})]),_vm._v(" "),_c('div',{staticClass:"modify-input-container"},[_c('label',{attrs:{"for":"whatsapp"}},[_vm._v("WhatsApp")]),_vm._v(" "),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.oKontact.media.whatsapp.link),expression:"oKontact.media.whatsapp.link"}],attrs:{"id":"whatsapp","type":"text","placeholder":"WhatsApp"},domProps:{"value":(_vm.oKontact.media.whatsapp.link)},on:{"input":function($event){if($event.target.composing){ return; }_vm.oKontact.media.whatsapp.link=$event.target.value}}})])]),_vm._v(" "),_c('div',{staticClass:"modify-action-container"},[_vm._m(0),_vm._v(" "),_c('div',{staticClass:"modify-action-right-container"},[_c('button',{staticClass:"btn green",on:{"click":function($event){_vm.Save()}}},[_vm._v("Save")]),_vm._v(" "),_c('button',{staticClass:"btn grey",on:{"click":function($event){_vm.Done()}}},[_vm._v("Done")])])])])])])}
+__vue__options__.staticRenderFns = [function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"modify-action-left-container"},[_c('button',{staticClass:"btn red"},[_vm._v("Delete")])])}]
 if (module.hot) {(function () {  var hotAPI = require("vueify/node_modules/vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
@@ -152,7 +189,7 @@ if (module.hot) {(function () {  var hotAPI = require("vueify/node_modules/vue-h
     hotAPI.reload("data-v-b96abb3a", __vue__options__)
   }
 })()}
-},{"vue":8,"vueify/lib/insert-css":9,"vueify/node_modules/vue-hot-reload-api":10}],4:[function(require,module,exports){
+},{"../util":6,"vue":9,"vueify/lib/insert-css":10,"vueify/node_modules/vue-hot-reload-api":11}],4:[function(require,module,exports){
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
 __vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{attrs:{"id":"app"}},[_c('router-view')],1)}
@@ -167,7 +204,7 @@ if (module.hot) {(function () {  var hotAPI = require("vueify/node_modules/vue-h
     hotAPI.reload("data-v-c0a4ae92", __vue__options__)
   }
 })()}
-},{"vue":8,"vueify/node_modules/vue-hot-reload-api":10}],5:[function(require,module,exports){
+},{"vue":9,"vueify/node_modules/vue-hot-reload-api":11}],5:[function(require,module,exports){
 var Vue = require('vue');
 var Vuex = require("vuex");
 var VueRouter = require("vue-router");
@@ -231,6 +268,21 @@ const store = new Vuex.Store({
           reject(error);
         });
       })
+    },
+    UpdateKontact({commit}, oKontact)
+    {
+      return new Promise( (resolve, reject) =>
+      {
+        fetch(`/kontacts/${oKontact.id}`, {
+          method : "PUT", 
+          body : JSON.stringify(oKontact) 
+        }).then( (response) => {
+          resolve(true);
+        }, (error) => {
+          console.error("error ", error);
+          reject(error);
+        });
+      });
     }
   }
 })
@@ -241,7 +293,52 @@ const vueApp = new Vue({
   store,
   render: h => h(RouterView)
 }); 
-},{"./Components/App.vue":1,"./Components/Modify.vue":3,"./Components/RouterView.vue":4,"vue":8,"vue-router":7,"vuex":11}],6:[function(require,module,exports){
+},{"./Components/App.vue":1,"./Components/Modify.vue":3,"./Components/RouterView.vue":4,"vue":9,"vue-router":8,"vuex":12}],6:[function(require,module,exports){
+class Util
+{
+    /**
+     * Determines if a variable is strictly an object, not array, not null
+     * @param {any} item - variable to test if object
+     */
+    isObject(item) {
+        return (item && typeof item === 'object' && !Array.isArray(item));
+    }
+
+    /**
+     * Deep merge two objects. Note circular references will result in infinite recurision
+     * @param target - target to merge objects into
+     * @param ...sources - sources to merge, the last being the overwritting
+     * @returns object merged
+     */
+    DeepMerge(target, ...sources) 
+    {
+        if (!sources.length) 
+            return target;
+        const source = sources.shift();
+
+        if (this.isObject(target) && this.isObject(source)) 
+        {
+            for (const key in source) 
+            {
+                if (this.isObject(source[key])) 
+                {
+                    if (!target[key]) 
+                        Object.assign(target, { [key]: {} });
+                    this.DeepMerge(target[key], source[key]);
+                } 
+                else 
+                {
+                    Object.assign(target, { [key]: source[key] });
+                }
+            }
+        }
+
+        return this.DeepMerge(target, ...sources);
+    }
+}
+
+module.exports = new Util();
+},{}],7:[function(require,module,exports){
 // randomColor by David Merfield under the CC0 license
 // https://github.com/davidmerfield/randomColor/
 
@@ -672,7 +769,7 @@ const vueApp = new Vue({
   return randomColor;
 }));
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 (function (process){
 /**
   * vue-router v2.2.1
@@ -2954,7 +3051,7 @@ if (inBrowser && window.Vue) {
 module.exports = VueRouter;
 
 }).call(this,require('_process'))
-},{"_process":12}],8:[function(require,module,exports){
+},{"_process":13}],9:[function(require,module,exports){
 (function (process,global){
 /*!
  * Vue.js v2.2.2
@@ -9681,7 +9778,7 @@ setTimeout(function () {
 module.exports = Vue$2;
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"_process":12}],9:[function(require,module,exports){
+},{"_process":13}],10:[function(require,module,exports){
 var inserted = exports.cache = {}
 
 function noop () {}
@@ -9706,7 +9803,7 @@ exports.insert = function (css) {
   }
 }
 
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 var Vue // late bind
 var version
 var map = window.__VUE_HOT_MAP__ = Object.create(null)
@@ -9844,7 +9941,7 @@ exports.reload = tryWrap(function (id, options) {
   })
 })
 
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 /**
  * vuex v2.2.1
  * (c) 2017 Evan You
@@ -10657,7 +10754,7 @@ return index;
 
 })));
 
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 

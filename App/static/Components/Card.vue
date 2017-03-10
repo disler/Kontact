@@ -21,8 +21,8 @@
             {{kontact.firstname + ' ' + kontact.lastname}}
         </div>
         <div class="kontact-card-media-container">
-            <a class="kontact-card-media-link" v-for="media in kontact.media" v-bind:href="media.link" >
-                <img v-bind:src="media.name" alt="alt"> 
+            <a class="kontact-card-media-link" v-for="media in kontact.media" v-show="media.link != ''" v-bind:href="media.link" >
+                <img v-bind:src="media.icon" alt="alt"> 
             </a>
         </div>
     </div>

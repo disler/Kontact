@@ -1,31 +1,68 @@
 <script>
+    const Util = require("../util");
+
     module.exports = {
         created(){
             const bCreateNotUpdate = this.$store.state.bCreateNotUpdate;
             if(bCreateNotUpdate === false)
             {
                 const oKontactToUpdate = this.$store.state.oKontactToUpdate;
-                this.$store.commit("ClearKontactReference");
                 this.SetKontactToUpdate(oKontactToUpdate);
             }
         },
         data(){
             return {
-                firstname : "",
-                lastname : "",
-                dateofbirth : "",
-                zipcode : "",
-                facebook:"",
-                twitter:"",
-                linkedin:"",
-                youtube:"",
-                whatsapp:""
+                oKontact : {
+                    id : -1,
+                    firstname : "",
+                    lastname : "",
+                    "date of birth" : "",
+                    "zip-code" : "",
+                    media : {
+                        "facebook" : {
+                            name : "facebook",
+                            link : ""
+                        },
+                        "twitter" : {
+                            name : "twitter",
+                            link : ""
+                        },
+                        "linkedin" : {
+                            name : "linkedin",
+                            link : ""
+                        },
+                        "youtube" : {
+                            name : "youtube",
+                            link : ""
+                        },
+                        "whatsapp" : {
+                            name : "whatsapp",
+                            link : ""
+                        },
+                    }
+                },
+                
             }
         },
         methods: {
             SetKontactToUpdate(oKontact)
             {
-                //this.firstname = oKontact.
+                this.oKontact = Util.DeepMerge({}, this.oKontact, oKontact);
+                console.log('this.oKontact', this.oKontact);
+            },
+            Done()
+            {
+                this.$store.commit("ClearKontactReference");
+                this.$router.push({path : "/"});
+            },
+            Save()
+            {
+                let oKontactToModify = this.oKontact;
+                this.$store.dispatch("UpdateKontact", oKontactToModify).then( (success) => {
+                    console.log("Successfully saved");
+                }, (error) => {
+                    console.error("error updating kontact", error);
+                });
             }
         }
     }
@@ -43,39 +80,39 @@
                 <div class="modify-content-container">
                     <div class="modify-input-container">
                         <label for="firstname">First Name</label>
-                        <input id="firstname" type="text" placeholder="First Name">
+                        <input id="firstname" type="text" placeholder="First Name" v-model="oKontact.firstname">
                     </div>
                     <div class="modify-input-container">
                         <label for="lastname">Last Name</label>
-                        <input id="lastname" type="text" placeholder="Last Name">
+                        <input id="lastname" type="text" placeholder="Last Name" v-model="oKontact.lastname">
                     </div>
                     <div class="modify-input-container">
                         <label for="dateofbirth">Date of Birth</label>
-                        <input id="dateofbirth" type="text" placeholder="Date Of Birth">
+                        <input id="dateofbirth" type="text" placeholder="Date Of Birth" v-model="oKontact['date of birth']">
                     </div>
                     <div class="modify-input-container">
                         <label for="zipcode">Zip Code</label>
-                        <input id="zipcode" type="text" placeholder="Zip Code">
+                        <input id="zipcode" type="text" placeholder="Zip Code" v-model="oKontact['zip-code']">
                     </div>
                     <div class="modify-input-container">
                         <label for="facebook">Facebook</label>
-                        <input id="facebook" type="text" placeholder="Facebook">
+                        <input id="facebook" type="text" placeholder="Facebook" v-model="oKontact.media.facebook.link">
                     </div>
                     <div class="modify-input-container">
                         <label for="twitter">Twitter</label>
-                        <input id="twitter" type="text" placeholder="Twitter">
+                        <input id="twitter" type="text" placeholder="Twitter" v-model="oKontact.media.twitter.link">
                     </div>
                     <div class="modify-input-container">
                         <label for="linkedin">LinkedIn</label>
-                        <input id="linkedin" type="text" placeholder="LinkedIn">
+                        <input id="linkedin" type="text" placeholder="LinkedIn" v-model="oKontact.media.linkedin.link">
                     </div>
                     <div class="modify-input-container">
                         <label for="youtube">Youtube</label>
-                        <input id="youtube" type="text" placeholder="Youtube">
+                        <input id="youtube" type="text" placeholder="Youtube" v-model="oKontact.media.youtube.link">
                     </div>
                     <div class="modify-input-container">
                         <label for="whatsapp">WhatsApp</label>
-                        <input id="whatsapp" type="text" placeholder="WhatsApp">
+                        <input id="whatsapp" type="text" placeholder="WhatsApp" v-model="oKontact.media.whatsapp.link">
                     </div>
                 </div>
 
@@ -84,8 +121,8 @@
                         <button class="btn red">Delete</button>
                     </div>
                     <div class="modify-action-right-container">
-                        <button class="btn green">Save</button>
-                        <router-link to="/"><button class="btn grey">Done</button></router-link>
+                        <button class="btn green" @click="Save()">Save</button>
+                        <button class="btn grey" @click="Done()">Done</button>
                     </div>
                 </div>
             </div>

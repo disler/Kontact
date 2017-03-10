@@ -1,4 +1,4 @@
-from time import time
+import datetime
 from WebUtil import WebUtil
 
 class DBInterface(object):
@@ -6,56 +6,63 @@ class DBInterface(object):
         Handles direct data base operations
     """
     def __init__(self):
+        dtToday = datetime.date.today().strftime("%m/%d/%y")
         self.oTables = {
             "tblKontact" : [
                 dict({
                     "id" : WebUtil.GenerateNumber(10),
                     "firstname": "Dave",
                     "lastname": "Hanson",
-                    "date of birth" : time(),
+                    "date of birth" : dtToday,
                     "zip-code" : WebUtil.GenerateNumber(5),
-                    "media" : list([
-                        dict({
-                            "name" : "/static/img/facebook.png",
+                    "media" : dict({
+                        "facebook" : dict({
+                            "name" : "facebook",
+                            "icon" : "/static/img/facebook.png",
                             "link" : "http://facebook.com"
                         }),
-                        dict({
-                            "name" : "/static/img/twitter.png",
+                        "twitter" : dict({
+                            "name" : "twitter",
+                            "icon" : "/static/img/twitter.png",
                             "link" : "http://twitter.com"
                         })
-                    ])
+                    })
                 }), dict({
                     "id" : WebUtil.GenerateNumber(10),
                     "firstname": "Shelby",
                     "lastname": "Colden",
-                    "date of birth" : time(),
+                    "date of birth" : dtToday,
                     "zip-code" : WebUtil.GenerateNumber(5),
-                    "media" : list([
-                        dict({
-                            "name" : "/static/img/facebook.png",
+                    "media" : dict({
+                        "facebook" : dict({
+                            "name" : "facebook",
+                            "icon" : "/static/img/facebook.png",
                             "link" : "http://facebook.com"
                         }),
-                        dict({
-                            "name" : "/static/img/twitter.png",
+                        "twitter" : dict({
+                            "name" : "twitter",
+                            "icon" : "/static/img/twitter.png",
                             "link" : "http://twitter.com"
                         })
-                    ])
+                    })
                 }), dict({
                     "id" : WebUtil.GenerateNumber(10),
                     "firstname": "Letuc",
                     "lastname": "WalBock",
-                    "date of birth" : time(),
+                    "date of birth" : dtToday,
                     "zip-code" : WebUtil.GenerateNumber(5),
-                    "media" : list([
-                        dict({
-                            "name" : "/static/img/facebook.png",
+                    "media" : dict({
+                        "facebook" : dict({
+                            "name" : "facebook",
+                            "icon" : "/static/img/facebook.png",
                             "link" : "http://facebook.com"
                         }),
-                        dict({
-                            "name" : "/static/img/twitter.png",
+                        "twitter" : dict({
+                            "name" : "twitter",
+                            "icon" : "/static/img/twitter.png",
                             "link" : "http://twitter.com"
                         })
-                    ])
+                    })
                 })
             ]
         }

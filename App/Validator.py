@@ -7,7 +7,7 @@ class Validator(object):
             Handles validation logic for 'kontacts'
         """
         def __init__(self):
-            self.MAX_FIELD_LENGTH = 5
+            self.MAX_FIELD_LENGTH = 7
             self.REQUIRED_FIELDS = ["firstname", "lastname"]
 
         def Validate(self, oRecord):
