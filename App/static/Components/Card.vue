@@ -1,20 +1,28 @@
 <script>
+
     module.exports = {
-        props : ['kontact']
+        props : ['kontact'],
+        methods : {
+            ClickCard(oKontact)
+            {
+                this.$store.commit('SetKontactToUpdate', oKontact);
+                this.$router.push({path : "/modify"});
+            }
+        }
     };
 </script>
 
 <template>
     <div class="kontact-card-template">
-        <div class="kontact-card-img-container">
+        <div class="kontact-card-img-container" @click="ClickCard(kontact)">
             <img src="./static/img/person.jpg" alt="">
         </div>
         <div class="kontact-card-title-container">
-            {{kontact.name}}
+            {{kontact.firstname + ' ' + kontact.lastname}}
         </div>
         <div class="kontact-card-media-container">
             <a class="kontact-card-media-link" v-for="media in kontact.media" v-bind:href="media.link" >
-                <img v-bind:src="media.name" alt=""> 
+                <img v-bind:src="media.name" alt="alt"> 
             </a>
         </div>
     </div>

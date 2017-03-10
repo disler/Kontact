@@ -13,19 +13,49 @@ class DBInterface(object):
                     "firstname": "Dave",
                     "lastname": "Hanson",
                     "date of birth" : time(),
-                    "zip-code" : WebUtil.GenerateNumber(5)
+                    "zip-code" : WebUtil.GenerateNumber(5),
+                    "media" : list([
+                        dict({
+                            "name" : "/static/img/facebook.png",
+                            "link" : "http://facebook.com"
+                        }),
+                        dict({
+                            "name" : "/static/img/twitter.png",
+                            "link" : "http://twitter.com"
+                        })
+                    ])
                 }), dict({
                     "id" : WebUtil.GenerateNumber(10),
                     "firstname": "Shelby",
                     "lastname": "Colden",
                     "date of birth" : time(),
-                    "zip-code" : WebUtil.GenerateNumber(5)
+                    "zip-code" : WebUtil.GenerateNumber(5),
+                    "media" : list([
+                        dict({
+                            "name" : "/static/img/facebook.png",
+                            "link" : "http://facebook.com"
+                        }),
+                        dict({
+                            "name" : "/static/img/twitter.png",
+                            "link" : "http://twitter.com"
+                        })
+                    ])
                 }), dict({
                     "id" : WebUtil.GenerateNumber(10),
                     "firstname": "Letuc",
                     "lastname": "WalBock",
                     "date of birth" : time(),
-                    "zip-code" : WebUtil.GenerateNumber(5)
+                    "zip-code" : WebUtil.GenerateNumber(5),
+                    "media" : list([
+                        dict({
+                            "name" : "/static/img/facebook.png",
+                            "link" : "http://facebook.com"
+                        }),
+                        dict({
+                            "name" : "/static/img/twitter.png",
+                            "link" : "http://twitter.com"
+                        })
+                    ])
                 })
             ]
         }

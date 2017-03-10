@@ -8,26 +8,15 @@
 
     module.exports = {
         created(){
-            this.lstKontact = this.DecorateKontacts(this.lstKontact)
-            
+            this.$store.dispatch("FetchKontacts").then( (lstKontacts) =>
+            {
+                this.lstKontact = this.$store.state.lstKontact;
+                this.lstKontact = this.DecorateKontacts(this.lstKontact) 
+            });
         },
         data() {
             return {
-                lstKontact : [
-                {
-                    name : "steve",
-                },{
-                    name : "max"
-                },{
-                    name : "yaner"
-                },{
-                    name : "jacob"
-                },{
-                    name : "altho"
-                },
-                {
-                    name : "johanna"
-                }],
+                lstKontact : [],
                 sFilter : ""
             }
         },
@@ -37,15 +26,6 @@
                 let lstDecoratedKontacts = [];
                 lstDecoratedKontacts = this.lstKontact.map(_kontact => {
                     _kontact.color = this.RandomColor();
-                    _kontact.media = [
-                        {
-                            "name" : "/static/img/facebook.png",
-                            "link" : "http://facebook.com"
-                        },{
-                            "name" : "/static/img/twitter.png",
-                            "link" : "http://twitter.com"
-                        },
-                    ]
                     return _kontact;
                 });
                 return lstDecoratedKontacts;
@@ -75,11 +55,9 @@
                 <div class='kontact-title'>
                     Kontacts
                 </div>
-                <router-link to="/modify">
                 <div class='kontact-add'>
                     +
                 </div>
-                </router-link>
             </div>
             <hr>
             <div class='kontact-filter-container'>
@@ -87,7 +65,7 @@
                 <!--<label for="filter">Filter...</label>-->
             </div>
             <div class="kontact-body-container">
-                <div class="kontact-card"  v-for="kontact in Kontacts" v-bind:style="{backgroundColor:kontact.color}">
+                <div class="kontact-card"   v-for="kontact in Kontacts" v-bind:style="{backgroundColor:kontact.color}">
                     <Card v-bind:kontact="kontact" />
                 </div>
             </div>

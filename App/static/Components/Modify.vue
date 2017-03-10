@@ -1,7 +1,32 @@
 <script>
     module.exports = {
-        create(){
-            alert("CREATE");
+        created(){
+            const bCreateNotUpdate = this.$store.state.bCreateNotUpdate;
+            if(bCreateNotUpdate === false)
+            {
+                const oKontactToUpdate = this.$store.state.oKontactToUpdate;
+                this.$store.commit("ClearKontactReference");
+                this.SetKontactToUpdate(oKontactToUpdate);
+            }
+        },
+        data(){
+            return {
+                firstname : "",
+                lastname : "",
+                dateofbirth : "",
+                zipcode : "",
+                facebook:"",
+                twitter:"",
+                linkedin:"",
+                youtube:"",
+                whatsapp:""
+            }
+        },
+        methods: {
+            SetKontactToUpdate(oKontact)
+            {
+                //this.firstname = oKontact.
+            }
         }
     }
 </script>
