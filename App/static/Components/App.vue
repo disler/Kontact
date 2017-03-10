@@ -7,14 +7,16 @@
     Vue.component('Card', Card);
 
     module.exports = {
-        created(){
+        created()
+        {
             this.$store.dispatch("FetchKontacts").then( (lstKontacts) =>
             {
-                this.lstKontact = this.$store.state.lstKontact;
-                this.lstKontact = this.DecorateKontacts(this.lstKontact) 
+                this.lstKontact = this.$store.getters.Kontacts;
+                this.lstKontact = this.DecorateKontacts(this.lstKontact);
             });
         },
-        data() {
+        data() 
+        {
             return {
                 lstKontact : [],
                 sFilter : ""
@@ -34,6 +36,12 @@
             {
                 return randomcolor({  hue, luminosity  });
             },
+            Create()
+            {
+                this.$store.commit("ClearKontactReference");
+                this.$store.commit("SetCreateNotUpdate", true);
+                this.$router.push({path : "/modify"});
+            }
         },
         computed : {
             Kontacts(){
@@ -55,7 +63,7 @@
                 <div class='kontact-title'>
                     Kontacts
                 </div>
-                <div class='kontact-add'>
+                <div class='kontact-add' @click="Create()">
                     +
                 </div>
             </div>

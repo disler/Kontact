@@ -10,14 +10,16 @@ var Vue = require('vue');
 Vue.component('Card', Card);
 
 module.exports = {
-    created(){
+    created()
+    {
         this.$store.dispatch("FetchKontacts").then( (lstKontacts) =>
         {
-            this.lstKontact = this.$store.state.lstKontact;
-            this.lstKontact = this.DecorateKontacts(this.lstKontact) 
+            this.lstKontact = this.$store.getters.Kontacts;
+            this.lstKontact = this.DecorateKontacts(this.lstKontact);
         });
     },
-    data() {
+    data() 
+    {
         return {
             lstKontact : [],
             sFilter : ""
@@ -37,6 +39,12 @@ module.exports = {
         {
             return randomcolor({  hue, luminosity  });
         },
+        Create()
+        {
+            this.$store.commit("ClearKontactReference");
+            this.$store.commit("SetCreateNotUpdate", true);
+            this.$router.push({path : "/modify"});
+        }
     },
     computed : {
         Kontacts(){
@@ -54,8 +62,8 @@ module.exports = {
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"kontact-wrapper"},[_c('div',{staticClass:"kontact-container"},[_vm._m(0),_vm._v(" "),_c('hr'),_vm._v(" "),_c('div',{staticClass:"kontact-filter-container"},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.sFilter),expression:"sFilter"}],attrs:{"id":"filter","placeholder":"Filter Kontacts"},domProps:{"value":(_vm.sFilter)},on:{"input":function($event){if($event.target.composing){ return; }_vm.sFilter=$event.target.value}}})]),_vm._v(" "),_c('div',{staticClass:"kontact-body-container"},_vm._l((_vm.Kontacts),function(kontact){return _c('div',{staticClass:"kontact-card",style:({backgroundColor:kontact.color})},[_c('Card',{attrs:{"kontact":kontact}})],1)}))])])}
-__vue__options__.staticRenderFns = [function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"kontact-header"},[_c('div',{staticClass:"kontact-title"},[_vm._v("\n                Kontacts\n            ")]),_vm._v(" "),_c('div',{staticClass:"kontact-add"},[_vm._v("\n                +\n            ")])])}]
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"kontact-wrapper"},[_c('div',{staticClass:"kontact-container"},[_c('div',{staticClass:"kontact-header"},[_c('div',{staticClass:"kontact-title"},[_vm._v("\n                Kontacts\n            ")]),_vm._v(" "),_c('div',{staticClass:"kontact-add",on:{"click":function($event){_vm.Create()}}},[_vm._v("\n                +\n            ")])]),_vm._v(" "),_c('hr'),_vm._v(" "),_c('div',{staticClass:"kontact-filter-container"},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.sFilter),expression:"sFilter"}],attrs:{"id":"filter","placeholder":"Filter Kontacts"},domProps:{"value":(_vm.sFilter)},on:{"input":function($event){if($event.target.composing){ return; }_vm.sFilter=$event.target.value}}})]),_vm._v(" "),_c('div',{staticClass:"kontact-body-container"},_vm._l((_vm.Kontacts),function(kontact){return _c('div',{staticClass:"kontact-card",style:({backgroundColor:kontact.color})},[_c('Card',{attrs:{"kontact":kontact}})],1)}))])])}
+__vue__options__.staticRenderFns = []
 if (module.hot) {(function () {  var hotAPI = require("vueify/node_modules/vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
@@ -64,10 +72,10 @@ if (module.hot) {(function () {  var hotAPI = require("vueify/node_modules/vue-h
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-0708b1c8", __vue__options__)
   } else {
-    hotAPI.rerender("data-v-0708b1c8", __vue__options__)
+    hotAPI.reload("data-v-0708b1c8", __vue__options__)
   }
 })()}
-},{"./Card.vue":2,"randomcolor":7,"vue":9,"vueify/lib/insert-css":10,"vueify/node_modules/vue-hot-reload-api":11}],2:[function(require,module,exports){
+},{"./Card.vue":2,"randomcolor":9,"vue":11,"vueify/lib/insert-css":12,"vueify/node_modules/vue-hot-reload-api":13}],2:[function(require,module,exports){
 var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert(".kontact-card-img-container{\n    width:100px;\n    height:100px;\n    border-radius:50%;\n    overflow:hidden;\n    cursor:pointer;\n    margin: 10px auto 50px auto;\n}.kontact-card-img-container > img{\n    width:inherit;\n    height:inherit;\n}\n.kontact-card-title-container{\n    width:100%;\n    text-align:center;\n    font-size:20px;\n    margin:10px 0 10px 0;\n    background-color:#4bb;\n    color:white;\n}\n.kontact-card-media-container{\n    margin-left:100%;\n    width:100%;\n    transition:margin .8s ease;\n    text-align:center;\n}\n.kontact-card-media-link{\n    margin:10px;\n}.kontact-card-media-link > img{\n    width:35px;\n    height:35px;\n    cursor:pointer;\n}")
 ;(function(){
 
@@ -100,7 +108,7 @@ if (module.hot) {(function () {  var hotAPI = require("vueify/node_modules/vue-h
     hotAPI.rerender("data-v-d2d74c0e", __vue__options__)
   }
 })()}
-},{"vue":9,"vueify/lib/insert-css":10,"vueify/node_modules/vue-hot-reload-api":11}],3:[function(require,module,exports){
+},{"vue":11,"vueify/lib/insert-css":12,"vueify/node_modules/vue-hot-reload-api":13}],3:[function(require,module,exports){
 var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert(".modify-wrapper{\n    max-width:1000px;\n    height:auto;\n    margin:0 auto 0 auto;\n}\n\n.modify-header-container{\n    font-size:50px;\n    margin:5px;\n}\n.modify-content-container{\n    width:100%;\n    display:flex;\n    justify-content:space-between;\n    flex-wrap:wrap;\n}\n.modify-input-container{\n    width:49%;\n}.modify-input-container > input{\n    margin:0 0 25px 0;\n    width:100%;\n    height:50px;\n    font-size:24px;\n    border-radius:5px;\n    border:none;\n    border-bottom:1px solid #aaa;\n    border-left:1px solid #aaa;\n    padding:15px;\n}\n.modify-action-container{\n    display:flex;\n    justify-content:space-between;\n}\n\ninput, label{\n    display:block;\n}")
 ;(function(){
 
@@ -108,15 +116,21 @@ const Util = require("../util");
 
 module.exports = {
     created(){
-        const bCreateNotUpdate = this.$store.state.bCreateNotUpdate;
+        const bCreateNotUpdate = this.$store.getters.CreateNotUpdate;
         if(bCreateNotUpdate === false)
         {
-            const oKontactToUpdate = this.$store.state.oKontactToUpdate;
+            this.bCreateNotUpdate = false;
+            const oKontactToUpdate = this.$store.getters.KontactToUpdate;
             this.SetKontactToUpdate(oKontactToUpdate);
+        }
+        else
+        {
+            this.bCreateNotUpdate = true;
         }
     },
     data(){
         return {
+            bCreateNotUpdate : true,
             oKontact : {
                 id : -1,
                 firstname : "",
@@ -125,35 +139,38 @@ module.exports = {
                 "zip-code" : "",
                 media : {
                     "facebook" : {
+                        icon : "./static/img/facebook.png",
                         name : "facebook",
                         link : ""
                     },
                     "twitter" : {
+                        icon : "./static/img/twitter.png",
                         name : "twitter",
                         link : ""
                     },
                     "linkedin" : {
+                        icon : "./static/img/linkedin.png",
                         name : "linkedin",
                         link : ""
                     },
                     "youtube" : {
+                        icon : "./static/img/youtube.png",
                         name : "youtube",
                         link : ""
                     },
                     "whatsapp" : {
+                        icon : "./static/img/whatsapp.png",
                         name : "whatsapp",
                         link : ""
                     },
                 }
             },
-            
         }
     },
     methods: {
         SetKontactToUpdate(oKontact)
         {
             this.oKontact = Util.DeepMerge({}, this.oKontact, oKontact);
-            console.log('this.oKontact', this.oKontact);
         },
         Done()
         {
@@ -162,11 +179,34 @@ module.exports = {
         },
         Save()
         {
-            let oKontactToModify = this.oKontact;
-            this.$store.dispatch("UpdateKontact", oKontactToModify).then( (success) => {
-                console.log("Successfully saved");
-            }, (error) => {
-                console.error("error updating kontact", error);
+            let oKontactToSave = this.oKontact;
+
+            //create
+            if(this.bCreateNotUpdate === true)
+            {
+                this.$store.dispatch("CreateKontact", oKontactToSave).then( (success) => {
+                    console.log("Successfully saved");
+                }, (error) => {
+                    console.error("error Creating kontact", error);
+                });
+            }
+            //update
+            else
+            {
+                this.$store.dispatch("UpdateKontact", oKontactToSave).then( (success) => {
+                    console.log("Successfully saved");
+                }, (error) => {
+                    console.error("error updating kontact", error);
+                });
+            }
+        },
+        Delete()
+        {
+            let oKontactToDelete = this.oKontact;
+            this.$store.dispatch("DeleteKontact", oKontactToDelete).then( (success) =>{
+                console.log("Successfully Deleted");
+            }, (error) =>{
+                console.error("error deleting kontact", error);
             });
         }
     }
@@ -176,8 +216,8 @@ module.exports = {
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"modify-template"},[_c('div',{staticClass:"modify-wrapper"},[_c('div',{staticClass:"modify-container"},[_c('div',{staticClass:"modify-header-container"},[_vm._v("\n                Kontacts\n            ")]),_vm._v(" "),_c('hr'),_vm._v(" "),_c('div',{staticClass:"modify-content-container"},[_c('div',{staticClass:"modify-input-container"},[_c('label',{attrs:{"for":"firstname"}},[_vm._v("First Name")]),_vm._v(" "),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.oKontact.firstname),expression:"oKontact.firstname"}],attrs:{"id":"firstname","type":"text","placeholder":"First Name"},domProps:{"value":(_vm.oKontact.firstname)},on:{"input":function($event){if($event.target.composing){ return; }_vm.oKontact.firstname=$event.target.value}}})]),_vm._v(" "),_c('div',{staticClass:"modify-input-container"},[_c('label',{attrs:{"for":"lastname"}},[_vm._v("Last Name")]),_vm._v(" "),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.oKontact.lastname),expression:"oKontact.lastname"}],attrs:{"id":"lastname","type":"text","placeholder":"Last Name"},domProps:{"value":(_vm.oKontact.lastname)},on:{"input":function($event){if($event.target.composing){ return; }_vm.oKontact.lastname=$event.target.value}}})]),_vm._v(" "),_c('div',{staticClass:"modify-input-container"},[_c('label',{attrs:{"for":"dateofbirth"}},[_vm._v("Date of Birth")]),_vm._v(" "),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.oKontact['date of birth']),expression:"oKontact['date of birth']"}],attrs:{"id":"dateofbirth","type":"text","placeholder":"Date Of Birth"},domProps:{"value":(_vm.oKontact['date of birth'])},on:{"input":function($event){if($event.target.composing){ return; }var $$exp = _vm.oKontact, $$idx = 'date of birth';if (!Array.isArray($$exp)){_vm.oKontact['date of birth']=$event.target.value}else{$$exp.splice($$idx, 1, $event.target.value)}}}})]),_vm._v(" "),_c('div',{staticClass:"modify-input-container"},[_c('label',{attrs:{"for":"zipcode"}},[_vm._v("Zip Code")]),_vm._v(" "),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.oKontact['zip-code']),expression:"oKontact['zip-code']"}],attrs:{"id":"zipcode","type":"text","placeholder":"Zip Code"},domProps:{"value":(_vm.oKontact['zip-code'])},on:{"input":function($event){if($event.target.composing){ return; }var $$exp = _vm.oKontact, $$idx = 'zip-code';if (!Array.isArray($$exp)){_vm.oKontact['zip-code']=$event.target.value}else{$$exp.splice($$idx, 1, $event.target.value)}}}})]),_vm._v(" "),_c('div',{staticClass:"modify-input-container"},[_c('label',{attrs:{"for":"facebook"}},[_vm._v("Facebook")]),_vm._v(" "),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.oKontact.media.facebook.link),expression:"oKontact.media.facebook.link"}],attrs:{"id":"facebook","type":"text","placeholder":"Facebook"},domProps:{"value":(_vm.oKontact.media.facebook.link)},on:{"input":function($event){if($event.target.composing){ return; }_vm.oKontact.media.facebook.link=$event.target.value}}})]),_vm._v(" "),_c('div',{staticClass:"modify-input-container"},[_c('label',{attrs:{"for":"twitter"}},[_vm._v("Twitter")]),_vm._v(" "),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.oKontact.media.twitter.link),expression:"oKontact.media.twitter.link"}],attrs:{"id":"twitter","type":"text","placeholder":"Twitter"},domProps:{"value":(_vm.oKontact.media.twitter.link)},on:{"input":function($event){if($event.target.composing){ return; }_vm.oKontact.media.twitter.link=$event.target.value}}})]),_vm._v(" "),_c('div',{staticClass:"modify-input-container"},[_c('label',{attrs:{"for":"linkedin"}},[_vm._v("LinkedIn")]),_vm._v(" "),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.oKontact.media.linkedin.link),expression:"oKontact.media.linkedin.link"}],attrs:{"id":"linkedin","type":"text","placeholder":"LinkedIn"},domProps:{"value":(_vm.oKontact.media.linkedin.link)},on:{"input":function($event){if($event.target.composing){ return; }_vm.oKontact.media.linkedin.link=$event.target.value}}})]),_vm._v(" "),_c('div',{staticClass:"modify-input-container"},[_c('label',{attrs:{"for":"youtube"}},[_vm._v("Youtube")]),_vm._v(" "),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.oKontact.media.youtube.link),expression:"oKontact.media.youtube.link"}],attrs:{"id":"youtube","type":"text","placeholder":"Youtube"},domProps:{"value":(_vm.oKontact.media.youtube.link)},on:{"input":function($event){if($event.target.composing){ return; }_vm.oKontact.media.youtube.link=$event.target.value}}})]),_vm._v(" "),_c('div',{staticClass:"modify-input-container"},[_c('label',{attrs:{"for":"whatsapp"}},[_vm._v("WhatsApp")]),_vm._v(" "),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.oKontact.media.whatsapp.link),expression:"oKontact.media.whatsapp.link"}],attrs:{"id":"whatsapp","type":"text","placeholder":"WhatsApp"},domProps:{"value":(_vm.oKontact.media.whatsapp.link)},on:{"input":function($event){if($event.target.composing){ return; }_vm.oKontact.media.whatsapp.link=$event.target.value}}})])]),_vm._v(" "),_c('div',{staticClass:"modify-action-container"},[_vm._m(0),_vm._v(" "),_c('div',{staticClass:"modify-action-right-container"},[_c('button',{staticClass:"btn green",on:{"click":function($event){_vm.Save()}}},[_vm._v("Save")]),_vm._v(" "),_c('button',{staticClass:"btn grey",on:{"click":function($event){_vm.Done()}}},[_vm._v("Done")])])])])])])}
-__vue__options__.staticRenderFns = [function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"modify-action-left-container"},[_c('button',{staticClass:"btn red"},[_vm._v("Delete")])])}]
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"modify-template"},[_c('div',{staticClass:"modify-wrapper"},[_c('div',{staticClass:"modify-container"},[_c('div',{staticClass:"modify-header-container"},[_vm._v("\n                Kontacts\n            ")]),_vm._v(" "),_c('hr'),_vm._v(" "),_c('div',{staticClass:"modify-content-container"},[_c('div',{staticClass:"modify-input-container"},[_c('label',{attrs:{"for":"firstname"}},[_vm._v("First Name")]),_vm._v(" "),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.oKontact.firstname),expression:"oKontact.firstname"}],attrs:{"id":"firstname","type":"text","placeholder":"First Name"},domProps:{"value":(_vm.oKontact.firstname)},on:{"input":function($event){if($event.target.composing){ return; }_vm.oKontact.firstname=$event.target.value}}})]),_vm._v(" "),_c('div',{staticClass:"modify-input-container"},[_c('label',{attrs:{"for":"lastname"}},[_vm._v("Last Name")]),_vm._v(" "),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.oKontact.lastname),expression:"oKontact.lastname"}],attrs:{"id":"lastname","type":"text","placeholder":"Last Name"},domProps:{"value":(_vm.oKontact.lastname)},on:{"input":function($event){if($event.target.composing){ return; }_vm.oKontact.lastname=$event.target.value}}})]),_vm._v(" "),_c('div',{staticClass:"modify-input-container"},[_c('label',{attrs:{"for":"dateofbirth"}},[_vm._v("Date of Birth")]),_vm._v(" "),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.oKontact['date of birth']),expression:"oKontact['date of birth']"}],attrs:{"id":"dateofbirth","type":"text","placeholder":"Date Of Birth"},domProps:{"value":(_vm.oKontact['date of birth'])},on:{"input":function($event){if($event.target.composing){ return; }var $$exp = _vm.oKontact, $$idx = 'date of birth';if (!Array.isArray($$exp)){_vm.oKontact['date of birth']=$event.target.value}else{$$exp.splice($$idx, 1, $event.target.value)}}}})]),_vm._v(" "),_c('div',{staticClass:"modify-input-container"},[_c('label',{attrs:{"for":"zipcode"}},[_vm._v("Zip Code")]),_vm._v(" "),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.oKontact['zip-code']),expression:"oKontact['zip-code']"}],attrs:{"id":"zipcode","type":"text","placeholder":"Zip Code"},domProps:{"value":(_vm.oKontact['zip-code'])},on:{"input":function($event){if($event.target.composing){ return; }var $$exp = _vm.oKontact, $$idx = 'zip-code';if (!Array.isArray($$exp)){_vm.oKontact['zip-code']=$event.target.value}else{$$exp.splice($$idx, 1, $event.target.value)}}}})]),_vm._v(" "),_c('div',{staticClass:"modify-input-container"},[_c('label',{attrs:{"for":"facebook"}},[_vm._v("Facebook")]),_vm._v(" "),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.oKontact.media.facebook.link),expression:"oKontact.media.facebook.link"}],attrs:{"id":"facebook","type":"text","placeholder":"Facebook"},domProps:{"value":(_vm.oKontact.media.facebook.link)},on:{"input":function($event){if($event.target.composing){ return; }_vm.oKontact.media.facebook.link=$event.target.value}}})]),_vm._v(" "),_c('div',{staticClass:"modify-input-container"},[_c('label',{attrs:{"for":"twitter"}},[_vm._v("Twitter")]),_vm._v(" "),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.oKontact.media.twitter.link),expression:"oKontact.media.twitter.link"}],attrs:{"id":"twitter","type":"text","placeholder":"Twitter"},domProps:{"value":(_vm.oKontact.media.twitter.link)},on:{"input":function($event){if($event.target.composing){ return; }_vm.oKontact.media.twitter.link=$event.target.value}}})]),_vm._v(" "),_c('div',{staticClass:"modify-input-container"},[_c('label',{attrs:{"for":"linkedin"}},[_vm._v("LinkedIn")]),_vm._v(" "),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.oKontact.media.linkedin.link),expression:"oKontact.media.linkedin.link"}],attrs:{"id":"linkedin","type":"text","placeholder":"LinkedIn"},domProps:{"value":(_vm.oKontact.media.linkedin.link)},on:{"input":function($event){if($event.target.composing){ return; }_vm.oKontact.media.linkedin.link=$event.target.value}}})]),_vm._v(" "),_c('div',{staticClass:"modify-input-container"},[_c('label',{attrs:{"for":"youtube"}},[_vm._v("Youtube")]),_vm._v(" "),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.oKontact.media.youtube.link),expression:"oKontact.media.youtube.link"}],attrs:{"id":"youtube","type":"text","placeholder":"Youtube"},domProps:{"value":(_vm.oKontact.media.youtube.link)},on:{"input":function($event){if($event.target.composing){ return; }_vm.oKontact.media.youtube.link=$event.target.value}}})]),_vm._v(" "),_c('div',{staticClass:"modify-input-container"},[_c('label',{attrs:{"for":"whatsapp"}},[_vm._v("WhatsApp")]),_vm._v(" "),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.oKontact.media.whatsapp.link),expression:"oKontact.media.whatsapp.link"}],attrs:{"id":"whatsapp","type":"text","placeholder":"WhatsApp"},domProps:{"value":(_vm.oKontact.media.whatsapp.link)},on:{"input":function($event){if($event.target.composing){ return; }_vm.oKontact.media.whatsapp.link=$event.target.value}}})])]),_vm._v(" "),_c('div',{staticClass:"modify-action-container"},[_c('div',{staticClass:"modify-action-left-container"},[_c('button',{directives:[{name:"show",rawName:"v-show",value:(_vm.bCreateNotUpdate === false),expression:"bCreateNotUpdate === false"}],staticClass:"btn red",on:{"click":function($event){_vm.Delete()}}},[_vm._v("Delete")])]),_vm._v(" "),_c('div',{staticClass:"modify-action-right-container"},[_c('button',{staticClass:"btn green",on:{"click":function($event){_vm.Save()}}},[_vm._v("Save")]),_vm._v(" "),_c('button',{staticClass:"btn grey",on:{"click":function($event){_vm.Done()}}},[_vm._v("Done")])])])])])])}
+__vue__options__.staticRenderFns = []
 if (module.hot) {(function () {  var hotAPI = require("vueify/node_modules/vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
@@ -189,7 +229,7 @@ if (module.hot) {(function () {  var hotAPI = require("vueify/node_modules/vue-h
     hotAPI.reload("data-v-b96abb3a", __vue__options__)
   }
 })()}
-},{"../util":6,"vue":9,"vueify/lib/insert-css":10,"vueify/node_modules/vue-hot-reload-api":11}],4:[function(require,module,exports){
+},{"../util":8,"vue":11,"vueify/lib/insert-css":12,"vueify/node_modules/vue-hot-reload-api":13}],4:[function(require,module,exports){
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
 __vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{attrs:{"id":"app"}},[_c('router-view')],1)}
@@ -204,19 +244,28 @@ if (module.hot) {(function () {  var hotAPI = require("vueify/node_modules/vue-h
     hotAPI.reload("data-v-c0a4ae92", __vue__options__)
   }
 })()}
-},{"vue":9,"vueify/node_modules/vue-hot-reload-api":11}],5:[function(require,module,exports){
+},{"vue":11,"vueify/node_modules/vue-hot-reload-api":13}],5:[function(require,module,exports){
 var Vue = require('vue');
-var Vuex = require("vuex");
+var RouterView = require("./Components/RouterView.vue");
+var store = require("./store");
+var router = require("./router");
+
+const vueApp = new Vue({
+  el : "#app",
+  router,
+  store,
+  render: _app => _app(RouterView)
+}); 
+},{"./Components/RouterView.vue":4,"./router":6,"./store":7,"vue":11}],6:[function(require,module,exports){
+var Vue = require('vue');
 var VueRouter = require("vue-router");
 
+//register router
+Vue.use(VueRouter);
+
+//get routable components
 var App = require('./Components/App.vue');
 var Modify = require("./Components/Modify.vue");
-var RouterView = require("./Components/RouterView.vue");
-
-//register router, register vuex state management
-Vue.use(VueRouter);
-Vue.use(Vuex);
-
 
 //configure router
 const router = new VueRouter({
@@ -226,6 +275,13 @@ const router = new VueRouter({
   ]
 });
 
+module.exports = router;
+},{"./Components/App.vue":1,"./Components/Modify.vue":3,"vue":11,"vue-router":10}],7:[function(require,module,exports){
+var Vue = require('vue');
+var Vuex = require("vuex");
+Vue.use(Vuex);
+
+
 //configure state management
 const store = new Vuex.Store({
   state: {
@@ -233,12 +289,25 @@ const store = new Vuex.Store({
     oKontactToUpdate : {},
     bCreateNotUpdate : undefined
   },
+  //standard getter interface
+  getters: {
+      Kontacts(state){
+        return state.lstKontact;
+      },
+      CreateNotUpdate(state){
+          return state.bCreateNotUpdate;
+      },
+      KontactToUpdate(state){
+          return state.oKontactToUpdate;
+      }
+  },
+  //sync
   mutations : {
     SetKontacts(state, lstKontact)
     {
       state.lstKontact = lstKontact;
     },
-    CreateNotUpdate(state, bCreateNotUpdate)
+    SetCreateNotUpdate(state, bCreateNotUpdate)
     {
       state.bCreateNotUpdate = bCreateNotUpdate;
     },
@@ -253,6 +322,7 @@ const store = new Vuex.Store({
       state.oKontactToUpdate = {};
     }
   },
+  //async
   actions : {
     FetchKontacts({commit})
     {
@@ -283,17 +353,42 @@ const store = new Vuex.Store({
           reject(error);
         });
       });
+    },
+    DeleteKontact({commit}, oKontact)
+    {
+      return new Promise( (resolve, reject) =>
+      {
+        fetch(`/kontacts/${oKontact.id}`, {
+          method : "DELETE", 
+          body : JSON.stringify(oKontact) 
+        }).then( (response) => {
+          resolve(true);
+        }, (error) => {
+          console.error("error ", error);
+          reject(error);
+        });
+      });
+    },
+    CreateKontact({commit}, oKontact)
+    {
+        return new Promise( (resolve, reject) =>
+        {
+            fetch(`/kontacts`, {
+                method : "POST", 
+                body : JSON.stringify(oKontact) 
+            }).then( (response) => {
+                resolve(true);
+            }, (error) => {
+                console.error("error ", error);
+                reject(error);
+            });
+        }); 
     }
   }
 })
 
-const vueApp = new Vue({
-  el : "#app",
-  router,
-  store,
-  render: h => h(RouterView)
-}); 
-},{"./Components/App.vue":1,"./Components/Modify.vue":3,"./Components/RouterView.vue":4,"vue":9,"vue-router":8,"vuex":12}],6:[function(require,module,exports){
+module.exports = store;
+},{"vue":11,"vuex":14}],8:[function(require,module,exports){
 class Util
 {
     /**
@@ -338,7 +433,7 @@ class Util
 }
 
 module.exports = new Util();
-},{}],7:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 // randomColor by David Merfield under the CC0 license
 // https://github.com/davidmerfield/randomColor/
 
@@ -769,7 +864,7 @@ module.exports = new Util();
   return randomColor;
 }));
 
-},{}],8:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 (function (process){
 /**
   * vue-router v2.2.1
@@ -3051,7 +3146,7 @@ if (inBrowser && window.Vue) {
 module.exports = VueRouter;
 
 }).call(this,require('_process'))
-},{"_process":13}],9:[function(require,module,exports){
+},{"_process":15}],11:[function(require,module,exports){
 (function (process,global){
 /*!
  * Vue.js v2.2.2
@@ -9778,7 +9873,7 @@ setTimeout(function () {
 module.exports = Vue$2;
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"_process":13}],10:[function(require,module,exports){
+},{"_process":15}],12:[function(require,module,exports){
 var inserted = exports.cache = {}
 
 function noop () {}
@@ -9803,7 +9898,7 @@ exports.insert = function (css) {
   }
 }
 
-},{}],11:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 var Vue // late bind
 var version
 var map = window.__VUE_HOT_MAP__ = Object.create(null)
@@ -9941,7 +10036,7 @@ exports.reload = tryWrap(function (id, options) {
   })
 })
 
-},{}],12:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 /**
  * vuex v2.2.1
  * (c) 2017 Evan You
@@ -10754,7 +10849,7 @@ return index;
 
 })));
 
-},{}],13:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 

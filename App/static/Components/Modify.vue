@@ -3,15 +3,21 @@
 
     module.exports = {
         created(){
-            const bCreateNotUpdate = this.$store.state.bCreateNotUpdate;
+            const bCreateNotUpdate = this.$store.getters.CreateNotUpdate;
             if(bCreateNotUpdate === false)
             {
-                const oKontactToUpdate = this.$store.state.oKontactToUpdate;
+                this.bCreateNotUpdate = false;
+                const oKontactToUpdate = this.$store.getters.KontactToUpdate;
                 this.SetKontactToUpdate(oKontactToUpdate);
+            }
+            else
+            {
+                this.bCreateNotUpdate = true;
             }
         },
         data(){
             return {
+                bCreateNotUpdate : true,
                 oKontact : {
                     id : -1,
                     firstname : "",
@@ -20,35 +26,38 @@
                     "zip-code" : "",
                     media : {
                         "facebook" : {
+                            icon : "./static/img/facebook.png",
                             name : "facebook",
                             link : ""
                         },
                         "twitter" : {
+                            icon : "./static/img/twitter.png",
                             name : "twitter",
                             link : ""
                         },
                         "linkedin" : {
+                            icon : "./static/img/linkedin.png",
                             name : "linkedin",
                             link : ""
                         },
                         "youtube" : {
+                            icon : "./static/img/youtube.png",
                             name : "youtube",
                             link : ""
                         },
                         "whatsapp" : {
+                            icon : "./static/img/whatsapp.png",
                             name : "whatsapp",
                             link : ""
                         },
                     }
                 },
-                
             }
         },
         methods: {
             SetKontactToUpdate(oKontact)
             {
                 this.oKontact = Util.DeepMerge({}, this.oKontact, oKontact);
-                console.log('this.oKontact', this.oKontact);
             },
             Done()
             {
@@ -57,11 +66,34 @@
             },
             Save()
             {
-                let oKontactToModify = this.oKontact;
-                this.$store.dispatch("UpdateKontact", oKontactToModify).then( (success) => {
-                    console.log("Successfully saved");
-                }, (error) => {
-                    console.error("error updating kontact", error);
+                let oKontactToSave = this.oKontact;
+
+                //create
+                if(this.bCreateNotUpdate === true)
+                {
+                    this.$store.dispatch("CreateKontact", oKontactToSave).then( (success) => {
+                        console.log("Successfully saved");
+                    }, (error) => {
+                        console.error("error Creating kontact", error);
+                    });
+                }
+                //update
+                else
+                {
+                    this.$store.dispatch("UpdateKontact", oKontactToSave).then( (success) => {
+                        console.log("Successfully saved");
+                    }, (error) => {
+                        console.error("error updating kontact", error);
+                    });
+                }
+            },
+            Delete()
+            {
+                let oKontactToDelete = this.oKontact;
+                this.$store.dispatch("DeleteKontact", oKontactToDelete).then( (success) =>{
+                    console.log("Successfully Deleted");
+                }, (error) =>{
+                    console.error("error deleting kontact", error);
                 });
             }
         }
@@ -118,7 +150,7 @@
 
                 <div class="modify-action-container">
                     <div class="modify-action-left-container">
-                        <button class="btn red">Delete</button>
+                        <button class="btn red" v-show="bCreateNotUpdate === false" @click="Delete()">Delete</button>
                     </div>
                     <div class="modify-action-right-container">
                         <button class="btn green" @click="Save()">Save</button>
