@@ -1,5 +1,4 @@
 <script>
-    const randomcolor = require("randomcolor");
 
     //register card component
     const Card = require("./Card.vue");
@@ -12,7 +11,6 @@
             this.$store.dispatch("FetchKontacts").then( (lstKontacts) =>
             {
                 this.lstKontact = this.$store.getters.Kontacts;
-                this.lstKontact = this.DecorateKontacts(this.lstKontact);
             });
         },
         data() 
@@ -23,19 +21,6 @@
             }
         },
         methods : {
-            DecorateKontacts(lstKontact)
-            {
-                let lstDecoratedKontacts = [];
-                lstDecoratedKontacts = this.lstKontact.map(_kontact => {
-                    _kontact.color = this.RandomColor();
-                    return _kontact;
-                });
-                return lstDecoratedKontacts;
-            },
-            RandomColor(hue="", luminosity="light")
-            {
-                return randomcolor({  hue, luminosity  });
-            },
             Create()
             {
                 this.$store.commit("ClearKontactReference");
@@ -70,7 +55,6 @@
             <hr>
             <div class='kontact-filter-container'>
                 <input id="filter" v-model="sFilter" placeholder="Filter Kontacts">
-                <!--<label for="filter">Filter...</label>-->
             </div>
             <div class="kontact-body-container">
                 <div class="kontact-card"   v-for="kontact in Kontacts" v-bind:style="{backgroundColor:kontact.color}">
@@ -118,6 +102,9 @@
         border-radius:10px;
         background-color: #ddd;
         border:none;
+        transition: all .8s ease;
+    }.kontact-filter-container > input:focus{
+        box-shadow: 2px 2px 2px #aaa ;
     }
     .kontact-body-container{
         width: 100%;
@@ -127,15 +114,15 @@
     }
         .kontact-card{
             width:200px;
-            height:250px;
+            min-height:250px;
             margin:25px;
             border-radius:10px;
             box-shadow:2px 4px 10px #ccc;
-            overflow:hidden;
+            overflow-x:hidden;
             transition:.75s all ease;
         }.kontact-card:hover{
-            opacity:.85;
-            margin-top:10px;
+            opacity:.75;
+            box-shadow:4px 6px 10px #aaa;
         }.kontact-card:hover .kontact-card-media-container{
             margin-left:0;
         }

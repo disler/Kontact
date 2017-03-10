@@ -1,8 +1,7 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert(".kontact-wrapper{\n    max-width:1000px;\n    height:auto;\n    margin:0 auto 0 auto;\n}\n\n.kontact-header{\n    display: flex;\n    justify-content: space-between;\n}\n\n.kontact-title{\n    font-size:50px;\n    margin:5px;\n}\n\n.kontact-add{\n    border: 1px solid #eee;\n    box-shadow:2px 2px 7px #aaa; \n    width:50px; \n    height:50px;\n    font-size:30px;\n    text-align:center;\n    margin:15px;\n    cursor:pointer;\n}\n.kontact-filter-container{\n    width:100%;\n}.kontact-filter-container > input{\n    width:100%;\n    height:45px;\n    font-size:25px;\n    text-align:center;\n    border-radius:10px;\n    background-color: #ddd;\n    border:none;\n}\n.kontact-body-container{\n    width: 100%;\n    display:flex;\n    justify-content:space-around;\n    flex-wrap:wrap;\n}\n    .kontact-card{\n        width:200px;\n        height:250px;\n        margin:25px;\n        border-radius:10px;\n        box-shadow:2px 4px 10px #ccc;\n        overflow:hidden;\n        transition:.75s all ease;\n    }.kontact-card:hover{\n        opacity:.85;\n        margin-top:10px;\n    }.kontact-card:hover .kontact-card-media-container{\n        margin-left:0;\n    }")
+var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert(".kontact-wrapper{\n    max-width:1000px;\n    height:auto;\n    margin:0 auto 0 auto;\n}\n\n.kontact-header{\n    display: flex;\n    justify-content: space-between;\n}\n\n.kontact-title{\n    font-size:50px;\n    margin:5px;\n}\n\n.kontact-add{\n    border: 1px solid #eee;\n    box-shadow:2px 2px 7px #aaa; \n    width:50px; \n    height:50px;\n    font-size:30px;\n    text-align:center;\n    margin:15px;\n    cursor:pointer;\n}\n.kontact-filter-container{\n    width:100%;\n}.kontact-filter-container > input{\n    width:100%;\n    height:45px;\n    font-size:25px;\n    text-align:center;\n    border-radius:10px;\n    background-color: #ddd;\n    border:none;\n    transition: all .8s ease;\n}.kontact-filter-container > input:focus{\n    box-shadow: 2px 2px 2px #aaa ;\n}\n.kontact-body-container{\n    width: 100%;\n    display:flex;\n    justify-content:space-around;\n    flex-wrap:wrap;\n}\n    .kontact-card{\n        width:200px;\n        min-height:250px;\n        margin:25px;\n        border-radius:10px;\n        box-shadow:2px 4px 10px #ccc;\n        overflow-x:hidden;\n        transition:.75s all ease;\n    }.kontact-card:hover{\n        opacity:.75;\n        box-shadow:4px 6px 10px #aaa;\n    }.kontact-card:hover .kontact-card-media-container{\n        margin-left:0;\n    }")
 ;(function(){
 
-const randomcolor = require("randomcolor");
 
 //register card component
 const Card = require("./Card.vue");
@@ -15,7 +14,6 @@ module.exports = {
         this.$store.dispatch("FetchKontacts").then( (lstKontacts) =>
         {
             this.lstKontact = this.$store.getters.Kontacts;
-            this.lstKontact = this.DecorateKontacts(this.lstKontact);
         });
     },
     data() 
@@ -26,19 +24,6 @@ module.exports = {
         }
     },
     methods : {
-        DecorateKontacts(lstKontact)
-        {
-            let lstDecoratedKontacts = [];
-            lstDecoratedKontacts = this.lstKontact.map(_kontact => {
-                _kontact.color = this.RandomColor();
-                return _kontact;
-            });
-            return lstDecoratedKontacts;
-        },
-        RandomColor(hue="", luminosity="light")
-        {
-            return randomcolor({  hue, luminosity  });
-        },
         Create()
         {
             this.$store.commit("ClearKontactReference");
@@ -75,8 +60,8 @@ if (module.hot) {(function () {  var hotAPI = require("vueify/node_modules/vue-h
     hotAPI.reload("data-v-0708b1c8", __vue__options__)
   }
 })()}
-},{"./Card.vue":2,"randomcolor":9,"vue":11,"vueify/lib/insert-css":12,"vueify/node_modules/vue-hot-reload-api":13}],2:[function(require,module,exports){
-var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert(".kontact-card-img-container{\n    width:100px;\n    height:100px;\n    border-radius:50%;\n    overflow:hidden;\n    cursor:pointer;\n    margin: 10px auto 50px auto;\n}.kontact-card-img-container > img{\n    width:inherit;\n    height:inherit;\n}\n.kontact-card-title-container{\n    width:100%;\n    text-align:center;\n    font-size:20px;\n    margin:10px 0 10px 0;\n    background-color:#4bb;\n    color:white;\n}\n.kontact-card-media-container{\n    margin-left:100%;\n    width:100%;\n    transition:margin .8s ease;\n    text-align:center;\n}\n.kontact-card-media-link{\n    margin:10px;\n}.kontact-card-media-link > img{\n    width:35px;\n    height:35px;\n    cursor:pointer;\n}")
+},{"./Card.vue":2,"vue":11,"vueify/lib/insert-css":12,"vueify/node_modules/vue-hot-reload-api":13}],2:[function(require,module,exports){
+var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert(".kontact-card-img-container{\n    width:118px;\n    height:118px;\n    border-radius:50%;\n    overflow:hidden;\n    cursor:pointer;\n    margin: 10px auto 0 auto;\n}.kontact-card-img-container > img{\n    width:inherit;\n    height:inherit;\n}\n.kontact-card-title-container{\n    width:100%;\n    text-align:center;\n    font-size:20px;\n    margin:30px 0 3.5px 0;\n    background-color:#4bb;\n    color:white;\n}\n.kontact-card-media-container{\n    margin-left:100%;\n    width:100%;\n    transition:margin .8s ease;\n    text-align:center;\n    margin-bottom:5px;\n}\n.kontact-card-media-link{\n    margin:10px;\n}.kontact-card-media-link > img{\n    width:35px;\n    height:35px;\n    cursor:pointer;\n}")
 ;(function(){
 
 
@@ -87,6 +72,13 @@ module.exports = {
         {
             this.$store.commit('SetKontactToUpdate', oKontact);
             this.$router.push({path : "/modify"});
+        },
+        EnsureValidLink(sLink)
+        {
+            if(sLink.indexOf("http") > -1)
+                return sLink;
+            else
+                return "http://" + sLink;
         }
     }
 };
@@ -95,7 +87,7 @@ module.exports = {
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"kontact-card-template"},[_c('div',{staticClass:"kontact-card-img-container",on:{"click":function($event){_vm.ClickCard(_vm.kontact)}}},[_c('img',{attrs:{"src":"./static/img/person.jpg","alt":""}})]),_vm._v(" "),_c('div',{staticClass:"kontact-card-title-container"},[_vm._v("\n        "+_vm._s(_vm.kontact.firstname + ' ' + _vm.kontact.lastname)+"\n    ")]),_vm._v(" "),_c('div',{staticClass:"kontact-card-media-container"},_vm._l((_vm.kontact.media),function(media){return _c('a',{directives:[{name:"show",rawName:"v-show",value:(media.link != ''),expression:"media.link != ''"}],staticClass:"kontact-card-media-link",attrs:{"href":media.link}},[_c('img',{attrs:{"src":media.icon,"alt":"alt"}})])}))])}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"kontact-card-template"},[_c('div',{staticClass:"kontact-card-img-container",on:{"click":function($event){_vm.ClickCard(_vm.kontact)}}},[_c('img',{attrs:{"src":_vm.kontact.face,"alt":""}})]),_vm._v(" "),_c('div',{staticClass:"kontact-card-title-container"},[_vm._v("\n        "+_vm._s(_vm.kontact.firstname + ' ' + _vm.kontact.lastname)+"\n    ")]),_vm._v(" "),_c('div',{staticClass:"kontact-card-media-container"},_vm._l((_vm.kontact.media),function(media){return _c('a',{directives:[{name:"show",rawName:"v-show",value:(media.link != ''),expression:"media.link != ''"}],staticClass:"kontact-card-media-link",attrs:{"href":_vm.EnsureValidLink(media.link),"target":"_blank"}},[_c('img',{attrs:{"src":media.icon,"alt":"alt"}})])}))])}
 __vue__options__.staticRenderFns = []
 if (module.hot) {(function () {  var hotAPI = require("vueify/node_modules/vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -113,6 +105,7 @@ var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert(".modify-
 ;(function(){
 
 const Util = require("../util");
+const randomcolor = require("randomcolor");
 
 module.exports = {
     created(){
@@ -130,9 +123,12 @@ module.exports = {
     },
     data(){
         return {
+            bDeleteConfirmDisplay : false,
             bCreateNotUpdate : true,
             oKontact : {
                 id : -1,
+                face : "/static/img/heads/head0.jpg",
+                color : this.RandomColor(),
                 firstname : "",
                 lastname : "",
                 "date of birth" : "",
@@ -168,6 +164,10 @@ module.exports = {
         }
     },
     methods: {
+        RandomColor(hue="", luminosity="light")
+        {
+            return randomcolor({  hue, luminosity  });
+        },
         SetKontactToUpdate(oKontact)
         {
             this.oKontact = Util.DeepMerge({}, this.oKontact, oKontact);
@@ -208,6 +208,7 @@ module.exports = {
             }, (error) =>{
                 console.error("error deleting kontact", error);
             });
+            this.$router.push({path : "/"});
         }
     }
 }
@@ -216,7 +217,7 @@ module.exports = {
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"modify-template"},[_c('div',{staticClass:"modify-wrapper"},[_c('div',{staticClass:"modify-container"},[_c('div',{staticClass:"modify-header-container"},[_vm._v("\n                Kontacts\n            ")]),_vm._v(" "),_c('hr'),_vm._v(" "),_c('div',{staticClass:"modify-content-container"},[_c('div',{staticClass:"modify-input-container"},[_c('label',{attrs:{"for":"firstname"}},[_vm._v("First Name")]),_vm._v(" "),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.oKontact.firstname),expression:"oKontact.firstname"}],attrs:{"id":"firstname","type":"text","placeholder":"First Name"},domProps:{"value":(_vm.oKontact.firstname)},on:{"input":function($event){if($event.target.composing){ return; }_vm.oKontact.firstname=$event.target.value}}})]),_vm._v(" "),_c('div',{staticClass:"modify-input-container"},[_c('label',{attrs:{"for":"lastname"}},[_vm._v("Last Name")]),_vm._v(" "),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.oKontact.lastname),expression:"oKontact.lastname"}],attrs:{"id":"lastname","type":"text","placeholder":"Last Name"},domProps:{"value":(_vm.oKontact.lastname)},on:{"input":function($event){if($event.target.composing){ return; }_vm.oKontact.lastname=$event.target.value}}})]),_vm._v(" "),_c('div',{staticClass:"modify-input-container"},[_c('label',{attrs:{"for":"dateofbirth"}},[_vm._v("Date of Birth")]),_vm._v(" "),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.oKontact['date of birth']),expression:"oKontact['date of birth']"}],attrs:{"id":"dateofbirth","type":"text","placeholder":"Date Of Birth"},domProps:{"value":(_vm.oKontact['date of birth'])},on:{"input":function($event){if($event.target.composing){ return; }var $$exp = _vm.oKontact, $$idx = 'date of birth';if (!Array.isArray($$exp)){_vm.oKontact['date of birth']=$event.target.value}else{$$exp.splice($$idx, 1, $event.target.value)}}}})]),_vm._v(" "),_c('div',{staticClass:"modify-input-container"},[_c('label',{attrs:{"for":"zipcode"}},[_vm._v("Zip Code")]),_vm._v(" "),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.oKontact['zip-code']),expression:"oKontact['zip-code']"}],attrs:{"id":"zipcode","type":"text","placeholder":"Zip Code"},domProps:{"value":(_vm.oKontact['zip-code'])},on:{"input":function($event){if($event.target.composing){ return; }var $$exp = _vm.oKontact, $$idx = 'zip-code';if (!Array.isArray($$exp)){_vm.oKontact['zip-code']=$event.target.value}else{$$exp.splice($$idx, 1, $event.target.value)}}}})]),_vm._v(" "),_c('div',{staticClass:"modify-input-container"},[_c('label',{attrs:{"for":"facebook"}},[_vm._v("Facebook")]),_vm._v(" "),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.oKontact.media.facebook.link),expression:"oKontact.media.facebook.link"}],attrs:{"id":"facebook","type":"text","placeholder":"Facebook"},domProps:{"value":(_vm.oKontact.media.facebook.link)},on:{"input":function($event){if($event.target.composing){ return; }_vm.oKontact.media.facebook.link=$event.target.value}}})]),_vm._v(" "),_c('div',{staticClass:"modify-input-container"},[_c('label',{attrs:{"for":"twitter"}},[_vm._v("Twitter")]),_vm._v(" "),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.oKontact.media.twitter.link),expression:"oKontact.media.twitter.link"}],attrs:{"id":"twitter","type":"text","placeholder":"Twitter"},domProps:{"value":(_vm.oKontact.media.twitter.link)},on:{"input":function($event){if($event.target.composing){ return; }_vm.oKontact.media.twitter.link=$event.target.value}}})]),_vm._v(" "),_c('div',{staticClass:"modify-input-container"},[_c('label',{attrs:{"for":"linkedin"}},[_vm._v("LinkedIn")]),_vm._v(" "),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.oKontact.media.linkedin.link),expression:"oKontact.media.linkedin.link"}],attrs:{"id":"linkedin","type":"text","placeholder":"LinkedIn"},domProps:{"value":(_vm.oKontact.media.linkedin.link)},on:{"input":function($event){if($event.target.composing){ return; }_vm.oKontact.media.linkedin.link=$event.target.value}}})]),_vm._v(" "),_c('div',{staticClass:"modify-input-container"},[_c('label',{attrs:{"for":"youtube"}},[_vm._v("Youtube")]),_vm._v(" "),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.oKontact.media.youtube.link),expression:"oKontact.media.youtube.link"}],attrs:{"id":"youtube","type":"text","placeholder":"Youtube"},domProps:{"value":(_vm.oKontact.media.youtube.link)},on:{"input":function($event){if($event.target.composing){ return; }_vm.oKontact.media.youtube.link=$event.target.value}}})]),_vm._v(" "),_c('div',{staticClass:"modify-input-container"},[_c('label',{attrs:{"for":"whatsapp"}},[_vm._v("WhatsApp")]),_vm._v(" "),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.oKontact.media.whatsapp.link),expression:"oKontact.media.whatsapp.link"}],attrs:{"id":"whatsapp","type":"text","placeholder":"WhatsApp"},domProps:{"value":(_vm.oKontact.media.whatsapp.link)},on:{"input":function($event){if($event.target.composing){ return; }_vm.oKontact.media.whatsapp.link=$event.target.value}}})])]),_vm._v(" "),_c('div',{staticClass:"modify-action-container"},[_c('div',{staticClass:"modify-action-left-container"},[_c('button',{directives:[{name:"show",rawName:"v-show",value:(_vm.bCreateNotUpdate === false),expression:"bCreateNotUpdate === false"}],staticClass:"btn red",on:{"click":function($event){_vm.Delete()}}},[_vm._v("Delete")])]),_vm._v(" "),_c('div',{staticClass:"modify-action-right-container"},[_c('button',{staticClass:"btn green",on:{"click":function($event){_vm.Save()}}},[_vm._v("Save")]),_vm._v(" "),_c('button',{staticClass:"btn grey",on:{"click":function($event){_vm.Done()}}},[_vm._v("Done")])])])])])])}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"modify-template"},[_c('div',{staticClass:"modify-wrapper"},[_c('div',{staticClass:"modify-container"},[_c('div',{staticClass:"modify-header-container"},[_vm._v("\n                Kontacts\n            ")]),_vm._v(" "),_c('hr'),_vm._v(" "),_c('div',{staticClass:"modify-content-container"},[_c('div',{staticClass:"modify-input-container"},[_c('label',{attrs:{"for":"firstname"}},[_vm._v("First Name")]),_vm._v(" "),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.oKontact.firstname),expression:"oKontact.firstname"}],attrs:{"id":"firstname","type":"text","placeholder":"First Name"},domProps:{"value":(_vm.oKontact.firstname)},on:{"input":function($event){if($event.target.composing){ return; }_vm.oKontact.firstname=$event.target.value}}})]),_vm._v(" "),_c('div',{staticClass:"modify-input-container"},[_c('label',{attrs:{"for":"lastname"}},[_vm._v("Last Name")]),_vm._v(" "),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.oKontact.lastname),expression:"oKontact.lastname"}],attrs:{"id":"lastname","type":"text","placeholder":"Last Name"},domProps:{"value":(_vm.oKontact.lastname)},on:{"input":function($event){if($event.target.composing){ return; }_vm.oKontact.lastname=$event.target.value}}})]),_vm._v(" "),_c('div',{staticClass:"modify-input-container"},[_c('label',{attrs:{"for":"dateofbirth"}},[_vm._v("Date of Birth")]),_vm._v(" "),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.oKontact['date of birth']),expression:"oKontact['date of birth']"}],attrs:{"id":"dateofbirth","type":"text","placeholder":"Date Of Birth"},domProps:{"value":(_vm.oKontact['date of birth'])},on:{"input":function($event){if($event.target.composing){ return; }var $$exp = _vm.oKontact, $$idx = 'date of birth';if (!Array.isArray($$exp)){_vm.oKontact['date of birth']=$event.target.value}else{$$exp.splice($$idx, 1, $event.target.value)}}}})]),_vm._v(" "),_c('div',{staticClass:"modify-input-container"},[_c('label',{attrs:{"for":"zipcode"}},[_vm._v("Zip Code")]),_vm._v(" "),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.oKontact['zip-code']),expression:"oKontact['zip-code']"}],attrs:{"id":"zipcode","type":"text","placeholder":"Zip Code"},domProps:{"value":(_vm.oKontact['zip-code'])},on:{"input":function($event){if($event.target.composing){ return; }var $$exp = _vm.oKontact, $$idx = 'zip-code';if (!Array.isArray($$exp)){_vm.oKontact['zip-code']=$event.target.value}else{$$exp.splice($$idx, 1, $event.target.value)}}}})]),_vm._v(" "),_c('div',{staticClass:"modify-input-container"},[_c('label',{attrs:{"for":"facebook"}},[_vm._v("Facebook")]),_vm._v(" "),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.oKontact.media.facebook.link),expression:"oKontact.media.facebook.link"}],attrs:{"id":"facebook","type":"text","placeholder":"Facebook"},domProps:{"value":(_vm.oKontact.media.facebook.link)},on:{"input":function($event){if($event.target.composing){ return; }_vm.oKontact.media.facebook.link=$event.target.value}}})]),_vm._v(" "),_c('div',{staticClass:"modify-input-container"},[_c('label',{attrs:{"for":"twitter"}},[_vm._v("Twitter")]),_vm._v(" "),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.oKontact.media.twitter.link),expression:"oKontact.media.twitter.link"}],attrs:{"id":"twitter","type":"text","placeholder":"Twitter"},domProps:{"value":(_vm.oKontact.media.twitter.link)},on:{"input":function($event){if($event.target.composing){ return; }_vm.oKontact.media.twitter.link=$event.target.value}}})]),_vm._v(" "),_c('div',{staticClass:"modify-input-container"},[_c('label',{attrs:{"for":"linkedin"}},[_vm._v("LinkedIn")]),_vm._v(" "),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.oKontact.media.linkedin.link),expression:"oKontact.media.linkedin.link"}],attrs:{"id":"linkedin","type":"text","placeholder":"LinkedIn"},domProps:{"value":(_vm.oKontact.media.linkedin.link)},on:{"input":function($event){if($event.target.composing){ return; }_vm.oKontact.media.linkedin.link=$event.target.value}}})]),_vm._v(" "),_c('div',{staticClass:"modify-input-container"},[_c('label',{attrs:{"for":"youtube"}},[_vm._v("Youtube")]),_vm._v(" "),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.oKontact.media.youtube.link),expression:"oKontact.media.youtube.link"}],attrs:{"id":"youtube","type":"text","placeholder":"Youtube"},domProps:{"value":(_vm.oKontact.media.youtube.link)},on:{"input":function($event){if($event.target.composing){ return; }_vm.oKontact.media.youtube.link=$event.target.value}}})]),_vm._v(" "),_c('div',{staticClass:"modify-input-container"},[_c('label',{attrs:{"for":"whatsapp"}},[_vm._v("WhatsApp")]),_vm._v(" "),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.oKontact.media.whatsapp.link),expression:"oKontact.media.whatsapp.link"}],attrs:{"id":"whatsapp","type":"text","placeholder":"WhatsApp"},domProps:{"value":(_vm.oKontact.media.whatsapp.link)},on:{"input":function($event){if($event.target.composing){ return; }_vm.oKontact.media.whatsapp.link=$event.target.value}}})])]),_vm._v(" "),_c('div',{staticClass:"modify-action-container"},[_c('div',{staticClass:"modify-action-left-container"},[_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.bCreateNotUpdate === false),expression:"bCreateNotUpdate === false"}],staticClass:"modify-action-left-inner"},[_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.bDeleteConfirmDisplay===false),expression:"bDeleteConfirmDisplay===false"}]},[_c('button',{staticClass:"btn red",on:{"click":function($event){_vm.bDeleteConfirmDisplay = true}}},[_vm._v("Delete")])]),_vm._v(" "),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.bDeleteConfirmDisplay===true),expression:"bDeleteConfirmDisplay===true"}]},[_c('span',{staticClass:"text-big"},[_vm._v("Are you sure?")]),_vm._v(" "),_c('span',[_c('button',{staticClass:"btn red",on:{"click":function($event){_vm.Delete()}}},[_vm._v("Delete")])]),_vm._v(" "),_c('span',[_c('button',{staticClass:"btn grey",on:{"click":function($event){_vm.bDeleteConfirmDisplay = false}}},[_vm._v("No")])])])])]),_vm._v(" "),_c('div',{staticClass:"modify-action-right-container"},[_c('button',{staticClass:"btn green",on:{"click":function($event){_vm.Save()}}},[_vm._v("Save")]),_vm._v(" "),_c('button',{staticClass:"btn grey",on:{"click":function($event){_vm.Done()}}},[_vm._v("Done")])])])])])])}
 __vue__options__.staticRenderFns = []
 if (module.hot) {(function () {  var hotAPI = require("vueify/node_modules/vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -229,7 +230,7 @@ if (module.hot) {(function () {  var hotAPI = require("vueify/node_modules/vue-h
     hotAPI.reload("data-v-b96abb3a", __vue__options__)
   }
 })()}
-},{"../util":8,"vue":11,"vueify/lib/insert-css":12,"vueify/node_modules/vue-hot-reload-api":13}],4:[function(require,module,exports){
+},{"../util":8,"randomcolor":9,"vue":11,"vueify/lib/insert-css":12,"vueify/node_modules/vue-hot-reload-api":13}],4:[function(require,module,exports){
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
 __vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{attrs:{"id":"app"}},[_c('router-view')],1)}
@@ -284,90 +285,93 @@ Vue.use(Vuex);
 
 //configure state management
 const store = new Vuex.Store({
-  state: {
-    lstKontact : [],
-    oKontactToUpdate : {},
-    bCreateNotUpdate : undefined
-  },
-  //standard getter interface
-  getters: {
-      Kontacts(state){
-        return state.lstKontact;
-      },
-      CreateNotUpdate(state){
-          return state.bCreateNotUpdate;
-      },
-      KontactToUpdate(state){
-          return state.oKontactToUpdate;
-      }
-  },
-  //sync
-  mutations : {
-    SetKontacts(state, lstKontact)
-    {
-      state.lstKontact = lstKontact;
+    
+    //expected state
+    state: {
+        lstKontact : [],
+        oKontactToUpdate : {},
+        bCreateNotUpdate : undefined
     },
-    SetCreateNotUpdate(state, bCreateNotUpdate)
-    {
-      state.bCreateNotUpdate = bCreateNotUpdate;
+    //standard getter interface
+    getters: {
+        Kontacts(state){
+            return state.lstKontact;
+        },
+        CreateNotUpdate(state){
+            return state.bCreateNotUpdate;
+        },
+        KontactToUpdate(state){
+            return state.oKontactToUpdate;
+        }
     },
-    SetKontactToUpdate(state, oKontactToUpdate)
-    {
-      state.bCreateNotUpdate = false;
-      state.oKontactToUpdate = oKontactToUpdate;
+    //sync
+    mutations : {
+        SetKontacts(state, lstKontact)
+        {
+            state.lstKontact = lstKontact;
+        },
+        SetCreateNotUpdate(state, bCreateNotUpdate)
+        {
+                state.bCreateNotUpdate = bCreateNotUpdate;
+        },
+        SetKontactToUpdate(state, oKontactToUpdate)
+        {
+            state.bCreateNotUpdate = false;
+            state.oKontactToUpdate = oKontactToUpdate;
+        },
+        ClearKontactReference(state)
+        {
+            state.bCreateNotUpdate = undefined;
+            state.oKontactToUpdate = {};
+        }
     },
-    ClearKontactReference(state)
-    {
-      state.bCreateNotUpdate = undefined;
-      state.oKontactToUpdate = {};
-    }
-  },
-  //async
-  actions : {
+    //async
+    actions : {
     FetchKontacts({commit})
     {
-      return new Promise( (resolve, reject) => {
-        fetch("/kontacts", {method:"get"}).then( (response) =>
+        return new Promise( (resolve, reject) => 
         {
-          response.json().then((json) => {
-            commit("SetKontacts", json);
-            resolve(json);
-          });
-        }, (error) => {
-          console.error('error', error);
-          reject(error);
-        });
-      })
+            fetch("/kontacts", {method:"get"}).then( (response) =>
+            {
+                response.json().then((json) => {
+                commit("SetKontacts", json);
+                resolve(json);
+                });
+            }, (error) => {
+                console.error('error', error);
+                reject(error);
+            });
+        })
     },
     UpdateKontact({commit}, oKontact)
     {
-      return new Promise( (resolve, reject) =>
-      {
-        fetch(`/kontacts/${oKontact.id}`, {
-          method : "PUT", 
-          body : JSON.stringify(oKontact) 
-        }).then( (response) => {
-          resolve(true);
-        }, (error) => {
-          console.error("error ", error);
-          reject(error);
+        return new Promise( (resolve, reject) =>
+        {
+            fetch(`/kontacts/${oKontact.id}`, {
+                method : "PUT", 
+                body : JSON.stringify(oKontact) 
+            }).then( (response) => {
+                resolve(true);
+            }, (error) => {
+                console.error("error ", error);
+                reject(error);
+            });
         });
-      });
     },
     DeleteKontact({commit}, oKontact)
     {
-      return new Promise( (resolve, reject) =>
-      {
-        fetch(`/kontacts/${oKontact.id}`, {
-          method : "DELETE", 
-          body : JSON.stringify(oKontact) 
-        }).then( (response) => {
-          resolve(true);
-        }, (error) => {
-          console.error("error ", error);
-          reject(error);
+        return new Promise( (resolve, reject) =>
+        {
+            fetch(`/kontacts/${oKontact.id}`, {
+                method : "DELETE", 
+                body : JSON.stringify(oKontact) 
+            }).then( (response) => {
+                resolve(true);
+            }, (error) => {
+                console.error("error ", error);
+                reject(error);
+            });
         });
-      });
     },
     CreateKontact({commit}, oKontact)
     {

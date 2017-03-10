@@ -7,6 +7,13 @@
             {
                 this.$store.commit('SetKontactToUpdate', oKontact);
                 this.$router.push({path : "/modify"});
+            },
+            EnsureValidLink(sLink)
+            {
+                if(sLink.indexOf("http") > -1)
+                    return sLink;
+                else
+                    return "http://" + sLink;
             }
         }
     };
@@ -15,13 +22,14 @@
 <template>
     <div class="kontact-card-template">
         <div class="kontact-card-img-container" @click="ClickCard(kontact)">
-            <img src="./static/img/person.jpg" alt="">
+            <!-- <img src="./static/img/person.jpg" alt="">-->
+            <img v-bind:src="kontact.face" alt="">
         </div>
         <div class="kontact-card-title-container">
             {{kontact.firstname + ' ' + kontact.lastname}}
         </div>
         <div class="kontact-card-media-container">
-            <a class="kontact-card-media-link" v-for="media in kontact.media" v-show="media.link != ''" v-bind:href="media.link" >
+            <a class="kontact-card-media-link" v-for="media in kontact.media" v-show="media.link != ''" v-bind:href="EnsureValidLink(media.link)" target="_blank">
                 <img v-bind:src="media.icon" alt="alt"> 
             </a>
         </div>
@@ -31,12 +39,12 @@
 
 <style>
     .kontact-card-img-container{
-        width:100px;
-        height:100px;
+        width:118px;
+        height:118px;
         border-radius:50%;
         overflow:hidden;
         cursor:pointer;
-        margin: 10px auto 50px auto;
+        margin: 10px auto 0 auto;
     }.kontact-card-img-container > img{
         width:inherit;
         height:inherit;
@@ -45,7 +53,7 @@
         width:100%;
         text-align:center;
         font-size:20px;
-        margin:10px 0 10px 0;
+        margin:30px 0 3.5px 0;
         background-color:#4bb;
         color:white;
     }
@@ -54,6 +62,7 @@
         width:100%;
         transition:margin .8s ease;
         text-align:center;
+        margin-bottom:5px;
     }
     .kontact-card-media-link{
         margin:10px;

@@ -1,5 +1,6 @@
 <script>
     const Util = require("../util");
+    const randomcolor = require("randomcolor");
 
     module.exports = {
         created(){
@@ -17,9 +18,12 @@
         },
         data(){
             return {
+                bDeleteConfirmDisplay : false,
                 bCreateNotUpdate : true,
                 oKontact : {
                     id : -1,
+                    face : "/static/img/heads/head0.jpg",
+                    color : this.RandomColor(),
                     firstname : "",
                     lastname : "",
                     "date of birth" : "",
@@ -55,6 +59,10 @@
             }
         },
         methods: {
+            RandomColor(hue="", luminosity="light")
+            {
+                return randomcolor({  hue, luminosity  });
+            },
             SetKontactToUpdate(oKontact)
             {
                 this.oKontact = Util.DeepMerge({}, this.oKontact, oKontact);
@@ -95,6 +103,7 @@
                 }, (error) =>{
                     console.error("error deleting kontact", error);
                 });
+                this.$router.push({path : "/"});
             }
         }
     }
@@ -150,7 +159,20 @@
 
                 <div class="modify-action-container">
                     <div class="modify-action-left-container">
-                        <button class="btn red" v-show="bCreateNotUpdate === false" @click="Delete()">Delete</button>
+                        <div class="modify-action-left-inner" v-show="bCreateNotUpdate === false">
+                            <div v-show="bDeleteConfirmDisplay===false">
+                                <button class="btn red"  @click="bDeleteConfirmDisplay = true">Delete</button>
+                            </div>
+                            <div v-show="bDeleteConfirmDisplay===true">
+                                <span class="text-big">Are you sure?</span>
+                                <span>
+                                    <button class="btn red" @click="Delete()">Delete</button>
+                                </span>
+                                <span>
+                                    <button class="btn grey" @click="bDeleteConfirmDisplay = false">No</button>
+                                </span>
+                            </div>
+                        </div>
                     </div>
                     <div class="modify-action-right-container">
                         <button class="btn green" @click="Save()">Save</button>

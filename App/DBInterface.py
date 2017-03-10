@@ -11,6 +11,8 @@ class DBInterface(object):
             "tblKontact" : [
                 dict({
                     "id" : WebUtil.GenerateNumber(10),
+                    "face" : "/static/img/heads/head1.jpg",
+                    "color" : "#a3bcf7",
                     "firstname": "Dave",
                     "lastname": "Hanson",
                     "date of birth" : dtToday,
@@ -29,6 +31,8 @@ class DBInterface(object):
                     })
                 }), dict({
                     "id" : WebUtil.GenerateNumber(10),
+                    "face" : "/static/img/heads/head4.jpg",
+                    "color" : "#f9ec70",
                     "firstname": "Shelby",
                     "lastname": "Colden",
                     "date of birth" : dtToday,
@@ -47,6 +51,8 @@ class DBInterface(object):
                     })
                 }), dict({
                     "id" : WebUtil.GenerateNumber(10),
+                    "face" : "/static/img/heads/head7.jpg",
+                    "color" : "#7c2182",
                     "firstname": "Letuc",
                     "lastname": "WalBock",
                     "date of birth" : dtToday,
