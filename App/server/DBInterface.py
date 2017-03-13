@@ -88,7 +88,7 @@ class DBInterface(object):
         """
             Separation method to fetch in memory mock elements
         """
-        dtToday = datetime.date.today().strftime("%m/%d/%y")
+        dtToday = datetime.date.today().strftime("%m/%d/%Y")
         return list([
                 dict({
                     "id" : WebUtil.GenerateNumber(10),
@@ -196,7 +196,7 @@ class DBInterface(object):
                     "color" : "#83ddff",
                     "firstname": "Daniel",
                     "lastname": "Isler",
-                    "date of birth" : datetime.datetime(1992, 12, 3).strftime("%d/%m/%y"),
+                    "date of birth" : datetime.datetime(1992, 12, 3).strftime("%d/%m/%Y"),
                     "zip-code" : 55427,
                     "media" : dict({
                         "youtube" : dict({
