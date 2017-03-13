@@ -162,6 +162,10 @@
         text-align:center;
         margin:15px;
         cursor:pointer;
+        transition:.5s all ease;
+    }.kontact-add:hover{
+        box-shadow:2px 2px 10px #888; 
+        background-color:#EEE;
     }
     .kontact-filter-container{
         width:100%;
