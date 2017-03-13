@@ -2,6 +2,11 @@
     const Util = require("../util");
     const randomcolor = require("randomcolor");
 
+    const Notification = require("./Notification.vue");
+    const Vue = require("vue");
+    Vue.component('Notification', Notification);
+
+
     module.exports = {
         created(){
             const bCreateNotUpdate = this.$store.getters.CreateNotUpdate;
@@ -18,6 +23,8 @@
         },
         data(){
             return {
+                bNotify : false,
+                sNotifyMessage : "",
                 bDeleteConfirmDisplay : false,
                 bCreateNotUpdate : true,
                 oKontact : {
@@ -58,6 +65,12 @@
                 },
             }
         },
+        computed: {
+            FullName()
+            {
+                return this.oKontact.firstname + ' ' + this.oKontact.lastname; 
+            }
+        },
         methods: {
             RandomColor(hue="", luminosity="light")
             {
@@ -76,34 +89,86 @@
             {
                 let oKontactToSave = this.oKontact;
 
-                //create
-                if(this.bCreateNotUpdate === true)
+                if(this.Validate(oKontactToSave))
                 {
-                    this.$store.dispatch("CreateKontact", oKontactToSave).then( (success) => {
-                        console.log("Successfully saved");
-                    }, (error) => {
-                        console.error("error Creating kontact", error);
-                    });
-                }
-                //update
-                else
-                {
-                    this.$store.dispatch("UpdateKontact", oKontactToSave).then( (success) => {
-                        console.log("Successfully saved");
-                    }, (error) => {
-                        console.error("error updating kontact", error);
-                    });
+                    //create
+                    if(this.bCreateNotUpdate === true)
+                    {
+                        this.$store.dispatch("CreateKontact", oKontactToSave).then( (success) => {
+                            this.Notify("Successfully Saved", 3000, "success");
+                        }, (error) => {
+                            console.error("error Creating kontact", error);
+                        });
+                    }
+                    //update
+                    else
+                    {
+                        this.$store.dispatch("UpdateKontact", oKontactToSave).then( (success) => {
+                            this.Notify("Successfully Updated", 3000, "success");
+                        }, (error) => {
+                            console.error("error updating kontact", error);
+                        });
+                    }
                 }
             },
             Delete()
             {
                 let oKontactToDelete = this.oKontact;
                 this.$store.dispatch("DeleteKontact", oKontactToDelete).then( (success) =>{
-                    console.log("Successfully Deleted");
+                    this.$store.commit("SetJustDeletedRecord", true);
+                    this.$router.push({path : "/"});
                 }, (error) =>{
                     console.error("error deleting kontact", error);
                 });
-                this.$router.push({path : "/"});
+
+            },
+            Validate(oKontactToValidate)
+            {
+                if(!oKontactToValidate.firstname || !oKontactToValidate.lastname)
+                {
+                    this.Notify("First Name and Last Name are required", 5000, "error");
+                    return false;
+                }
+                if( oKontactToValidate["date of birth"] )
+                {
+                    if( false == (/^\d{2}\/\d{2}\/\d{4}$/).test(oKontactToValidate["date of birth"]))
+                    {
+                        this.Notify("Date of Birth must be in format dd/mm/yyyy", 5000, "error");
+                        return false;
+                    }
+                }
+
+                const bValidMedia = Object.values(oKontactToValidate.media).every(_media => {
+                    if(_media.link && _media.link.length > 0)
+                    {
+                        if( false == (/[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi).test(_media.link))
+                        {
+                            this.Notify(`The ${_media.name} url is invalid`, 5000, "error");
+                            return false;
+                        }
+                        else
+                            return true;
+                    }
+
+                    return true;
+                })
+
+                if(false === bValidMedia)
+                    return false;
+                
+
+
+                return true;
+            },
+            Notify(sMessage, iDurationInMS, sNotifyType)
+            {
+                this.sNotifyMessage = sMessage;
+                this.bNotify = true;
+                this.sNotifyType = sNotifyType;
+                setTimeout( () =>
+                {
+                    this.bNotify = false;
+                }, iDurationInMS)
             }
         }
     }
@@ -111,6 +176,9 @@
 
 <template>
     <div class="modify-template">
+
+        <Notification v-bind:bShow="bNotify" v-bind:sMessage="sNotifyMessage" v-bind:sType="sNotifyType"></Notification>
+
         <div class="modify-wrapper">
             <div class="modify-container">
                 <div class="modify-header-container">
@@ -118,18 +186,28 @@
                 </div>
                 <hr>
 
+                <div class="modify-user-container" v-bind:style="{backgroundColor:oKontact.color}">
+                    <div class="modify-user-img-container">
+                        <img v-bind:src="oKontact.face" alt="">
+                    </div>
+                    <div class="modify-user-name-container">
+                        {{FullName}}
+                    </div>
+
+                </div>
+
                 <div class="modify-content-container">
                     <div class="modify-input-container">
-                        <label for="firstname">First Name</label>
+                        <label for="firstname">*First Name</label>
                         <input id="firstname" type="text" placeholder="First Name" v-model="oKontact.firstname">
                     </div>
                     <div class="modify-input-container">
-                        <label for="lastname">Last Name</label>
+                        <label for="lastname">*Last Name</label>
                         <input id="lastname" type="text" placeholder="Last Name" v-model="oKontact.lastname">
                     </div>
                     <div class="modify-input-container">
                         <label for="dateofbirth">Date of Birth</label>
-                        <input id="dateofbirth" type="text" placeholder="Date Of Birth" v-model="oKontact['date of birth']">
+                        <input id="dateofbirth" type="text" placeholder="Date Of Birth mm/dd/yyyy" v-model="oKontact['date of birth']">
                     </div>
                     <div class="modify-input-container">
                         <label for="zipcode">Zip Code</label>
@@ -188,7 +266,7 @@
     .modify-wrapper{
         max-width:1000px;
         height:auto;
-        margin:0 auto 0 auto;
+        margin:0 auto 25px auto;
     }
 
     .modify-header-container{
@@ -217,6 +295,36 @@
     .modify-action-container{
         display:flex;
         justify-content:space-between;
+    }
+
+    .modify-user-container{
+        border-radius:10px;
+        width:200px;
+        min-height:200px;
+        margin: 10px auto 10px auto;
+        padding:10px 0 10px 0;
+        transition:1s all ease;
+    }
+
+    .modify-user-img-container{
+        width:118px;
+        height:118px;
+        border-radius:50%;
+        overflow:hidden;
+        cursor:pointer;
+        margin: 10px auto 0 auto;
+    }
+    .modify-user-img-container > img{
+        width:inherit;
+        height:inherit;
+
+    }
+    .modify-user-name-container{
+        margin: 10px auto 0 auto;
+        font-size:22px;
+        text-align:center;
+        background-color:#4bb;
+        color:white;
     }
 
     input, label{

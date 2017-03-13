@@ -10,7 +10,8 @@ const store = new Vuex.Store({
     state: {
         lstKontact : [],
         oKontactToUpdate : {},
-        bCreateNotUpdate : undefined
+        bCreateNotUpdate : undefined,
+        bJustDeletedRecord : false
     },
     //standard getter interface
     getters: {
@@ -22,10 +23,18 @@ const store = new Vuex.Store({
         },
         KontactToUpdate(state){
             return state.oKontactToUpdate;
+        },
+        JustDeletedRecord(state)
+        {
+            return state.bJustDeletedRecord;
         }
     },
     //sync
     mutations : {
+        SetJustDeletedRecord(state, bDeleted)
+        {
+            state.bJustDeletedRecord = bDeleted;
+        },
         SetKontacts(state, lstKontact)
         {
             state.lstKontact = lstKontact;

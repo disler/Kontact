@@ -5,6 +5,11 @@
     var Vue = require('vue');
     Vue.component('Card', Card);
 
+    //register Notification component
+    const Notification = require("./Notification.vue");
+    var Vue = require('vue');
+    Vue.component('Notification', Notification);
+
     module.exports = {
         created()
         {
@@ -12,12 +17,22 @@
             {
                 this.lstKontact = this.$store.getters.Kontacts;
             });
+
+            const bDidJustDeleteRecord = this.$store.getters.JustDeletedRecord;
+            if(bDidJustDeleteRecord)
+            {
+                this.$store.commit("SetJustDeletedRecord", false);
+                this.Notify("Successfully Deleted", 3000, "success");
+            }
         },
         data() 
         {
             return {
                 lstKontact : [],
-                sFilter : ""
+                sFilter : "",
+                sNotifyMessage : "",
+                bNotify : false,
+                sNotifyType : ""
             }
         },
         methods : {
@@ -26,12 +41,25 @@
                 this.$store.commit("ClearKontactReference");
                 this.$store.commit("SetCreateNotUpdate", true);
                 this.$router.push({path : "/modify"});
+            },
+            Notify(sMessage, iDurationInMS, sNotifyType)
+            {
+                this.sNotifyMessage = sMessage;
+                this.bNotify = true;
+                this.sNotifyType = sNotifyType;
+                setTimeout( () =>
+                {
+                    this.bNotify = false;
+                }, iDurationInMS)
             }
         },
         computed : {
             Kontacts(){
+                const funcFullName = (_record) => _record.firstname.toLowerCase() + ' ' + _record.lastname.toLowerCase();
                 if(this.sFilter)
-                    return this.lstKontact.filter(_record => _record.name.includes(this.sFilter));
+                {
+                    return this.lstKontact.filter(_record => funcFullName(_record).includes(this.sFilter.toLowerCase()) );
+                }
                 else
                     return this.lstKontact;
             }
@@ -43,6 +71,9 @@
 
 <template>
     <div class="kontact-wrapper">
+
+        <Notification v-bind:bShow="bNotify" v-bind:sMessage="sNotifyMessage" v-bind:sType="sNotifyType"></Notification>
+
         <div class="kontact-container">
             <div class="kontact-header">
                 <div class='kontact-title'>
@@ -119,7 +150,7 @@
             border-radius:10px;
             box-shadow:2px 4px 10px #ccc;
             overflow-x:hidden;
-            transition:.75s all ease;
+            transition:.75s box-shadow ease, .75s opacity ease;
         }.kontact-card:hover{
             opacity:.75;
             box-shadow:4px 6px 10px #aaa;
