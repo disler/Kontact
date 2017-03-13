@@ -16,3 +16,4 @@ Check out http://disler.pythonanywhere.com/#/ for a view of the site
 * Save button should be deactivated when no changes have been made
 * Filtering should animate
 * Ability to select backdrop color
+* Clean up .gitignore (bundle.js, .vscode/, etc)
