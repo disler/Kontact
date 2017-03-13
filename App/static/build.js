@@ -8,7 +8,7 @@ const Card = require("./Card.vue");
 var Vue = require('vue');
 Vue.component('Card', Card);
 
-//register Notification component
+//Register Notification.vue component
 const Notification = require("./Notification.vue");
 var Vue = require('vue');
 Vue.component('Notification', Notification);
@@ -16,35 +16,67 @@ Vue.component('Notification', Notification);
 module.exports = {
     created()
     {
+        //call store to fetch kontacts and set locally
         this.$store.dispatch("FetchKontacts").then( (lstKontacts) =>
         {
             this.lstKontact = this.$store.getters.Kontacts;
         });
-
+        
+        //call store to determine if a record was just deleted
         const bDidJustDeleteRecord = this.$store.getters.JustDeletedRecord;
+
+        //if a record was deleted 
         if(bDidJustDeleteRecord)
         {
+            //reset the 'was just deleted' store value to false since we've acknowledged it's value
             this.$store.commit("SetJustDeletedRecord", false);
+
+            //create successfully deleted notification
             this.Notify("Successfully Deleted", 3000, "success");
         }
     },
     data() 
     {
         return {
+            //list of kontacts to display
             lstKontact : [],
+
+            //name filter to filter 'lstKontact' by
             sFilter : "",
+
+            //notification message
             sNotifyMessage : "",
+
+            //if we should display the notification panel
             bNotify : false,
+
+            //the type of notification
             sNotifyType : ""
         }
     },
     methods : {
+
+        /**
+        * Change views to create a new kontact
+        */
         Create()
         {
+            //clear the current kontact reference oncase one was previously set, we need the Modify.vue component to create not update
             this.$store.commit("ClearKontactReference");
+
+            //let the Modify.vue view know we're creating a record not updating it
             this.$store.commit("SetCreateNotUpdate", true);
+
+            //change views to the Modify.vue component
             this.$router.push({path : "/modify"});
         },
+
+        /**
+        * Pop up the notification UI to notify the user of something
+        * @param {string} sMessage - the message the client should see
+        * @param {number} iDurationInMS - the duration the modal should exist in Milliseconds
+        * @param {string} sNotifyType - the type of notification (success, warning, error)
+        */
         Notify(sMessage, iDurationInMS, sNotifyType)
         {
             this.sNotifyMessage = sMessage;
@@ -57,12 +89,20 @@ module.exports = {
         }
     },
     computed : {
+
+        /**
+        * Run the kontacts through the 'sFilter' variable and filter accordingly if a filter exists
+        */
         Kontacts(){
+
+            //creates a full name by concatenating the first and last name with a space.
             const funcFullName = (_record) => _record.firstname.toLowerCase() + ' ' + _record.lastname.toLowerCase();
+
+            //if we have a search filter filter the reocrds based on the 'sFilter' string
             if(this.sFilter)
-            {
                 return this.lstKontact.filter(_record => funcFullName(_record).includes(this.sFilter.toLowerCase()) );
-            }
+
+            //return just the list of kontacts
             else
                 return this.lstKontact;
         }
@@ -75,7 +115,7 @@ module.exports = {
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"kontact-wrapper"},[_c('Notification',{attrs:{"bShow":_vm.bNotify,"sMessage":_vm.sNotifyMessage,"sType":_vm.sNotifyType}}),_vm._v(" "),_c('div',{staticClass:"kontact-container"},[_c('div',{staticClass:"kontact-header"},[_c('div',{staticClass:"kontact-title"},[_vm._v("\n                Kontacts\n            ")]),_vm._v(" "),_c('div',{staticClass:"kontact-add",on:{"click":function($event){_vm.Create()}}},[_vm._v("\n                +\n            ")])]),_vm._v(" "),_c('hr'),_vm._v(" "),_c('div',{staticClass:"kontact-filter-container"},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.sFilter),expression:"sFilter"}],attrs:{"id":"filter","placeholder":"Filter Kontacts"},domProps:{"value":(_vm.sFilter)},on:{"input":function($event){if($event.target.composing){ return; }_vm.sFilter=$event.target.value}}})]),_vm._v(" "),_c('div',{staticClass:"kontact-body-container"},_vm._l((_vm.Kontacts),function(kontact){return _c('div',{staticClass:"kontact-card",style:({backgroundColor:kontact.color})},[_c('Card',{attrs:{"kontact":kontact}})],1)}))])],1)}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"kontact-wrapper"},[_c('Notification',{attrs:{"bShow":_vm.bNotify,"sMessage":_vm.sNotifyMessage,"sType":_vm.sNotifyType}}),_vm._v(" "),_c('div',{staticClass:"kontact-container"},[_c('div',{staticClass:"kontact-header"},[_c('div',{staticClass:"kontact-title"},[_vm._v("\n                Kontact\n            ")]),_vm._v(" "),_c('div',{staticClass:"kontact-add",on:{"click":function($event){_vm.Create()}}},[_vm._v("\n                +\n            ")])]),_vm._v(" "),_c('hr'),_vm._v(" "),_c('div',{staticClass:"kontact-filter-container"},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.sFilter),expression:"sFilter"}],attrs:{"id":"filter","placeholder":"Filter Kontacts"},domProps:{"value":(_vm.sFilter)},on:{"input":function($event){if($event.target.composing){ return; }_vm.sFilter=$event.target.value}}})]),_vm._v(" "),_c('div',{staticClass:"kontact-body-container"},_vm._l((_vm.Kontacts),function(kontact){return _c('div',{staticClass:"kontact-card",style:({backgroundColor:kontact.color})},[_c('Card',{attrs:{"kontact":kontact}})],1)}))])],1)}
 __vue__options__.staticRenderFns = []
 if (module.hot) {(function () {  var hotAPI = require("vueify/node_modules/vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -96,11 +136,21 @@ var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert(".kontact
 module.exports = {
     props : ['kontact'],
     methods : {
+        /**
+        * A card has been clicked to be investigated, set it and change the view to the Modify.vue component
+        * @param {object} oKontact - kontact record to be possibly modified
+        */
         ClickCard(oKontact)
         {
             this.$store.commit('SetKontactToUpdate', oKontact);
             this.$router.push({path : "/modify"});
         },
+
+        /**
+        * Ensures a media url link contains 'http' as the prefix 
+        * @param {string} sLink - link to validate
+        * @return {string} string  - valid link
+        */
         EnsureValidLink(sLink)
         {
             if(sLink.indexOf("http") > -1)
@@ -129,12 +179,13 @@ if (module.hot) {(function () {  var hotAPI = require("vueify/node_modules/vue-h
   }
 })()}
 },{"vue":12,"vueify/lib/insert-css":13,"vueify/node_modules/vue-hot-reload-api":14}],3:[function(require,module,exports){
-var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert(".modify-wrapper{\n    max-width:1000px;\n    height:auto;\n    margin:0 auto 25px auto;\n}\n\n.modify-header-container{\n    font-size:50px;\n    margin:5px;\n}\n.modify-content-container{\n    width:100%;\n    display:flex;\n    justify-content:space-between;\n    flex-wrap:wrap;\n}\n.modify-input-container{\n    width:49%;\n}.modify-input-container > input{\n    margin:0 0 25px 0;\n    width:100%;\n    height:50px;\n    font-size:24px;\n    border-radius:5px;\n    border:none;\n    border-bottom:1px solid #aaa;\n    border-left:1px solid #aaa;\n    padding:15px;\n}\n.modify-action-container{\n    display:flex;\n    justify-content:space-between;\n}\n\n.modify-user-container{\n    border-radius:10px;\n    width:200px;\n    min-height:200px;\n    margin: 10px auto 10px auto;\n    padding:10px 0 10px 0;\n    transition:1s all ease;\n}\n\n.modify-user-img-container{\n    width:118px;\n    height:118px;\n    border-radius:50%;\n    overflow:hidden;\n    cursor:pointer;\n    margin: 10px auto 0 auto;\n}\n.modify-user-img-container > img{\n    width:inherit;\n    height:inherit;\n\n}\n.modify-user-name-container{\n    margin: 10px auto 0 auto;\n    font-size:22px;\n    text-align:center;\n    background-color:#4bb;\n    color:white;\n}\n\ninput, label{\n    display:block;\n}")
+var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert(".modify-wrapper{\n    max-width:1000px;\n    height:auto;\n    margin:0 auto 25px auto;\n}\n\n.modify-header-container{\n    font-size:50px;\n    margin:5px;\n}\n.modify-content-container{\n    width:100%;\n    display:flex;\n    justify-content:space-between;\n    flex-wrap:wrap;\n}\n.modify-input-container{\n    width:49%;\n}.modify-input-container > input{\n    margin:0 0 25px 0;\n    width:100%;\n    height:50px;\n    font-size:24px;\n    border-radius:5px;\n    border:none;\n    border-bottom:1px solid #aaa;\n    border-left:1px solid #aaa;\n    padding:15px;\n}\n.modify-action-container{\n    display:flex;\n    justify-content:space-between;\n}\n\n.modify-user-container{\n    border-radius:10px;\n    width:200px;\n    min-height:200px;\n    margin: 10px auto 10px auto;\n    padding:10px 0 10px 0;\n    box-shadow:2px 2px 8px #aaa;\n    transition:1s all ease;\n}\n\n.modify-user-img-container{\n    width:118px;\n    height:118px;\n    border-radius:50%;\n    overflow:hidden;\n    cursor:pointer;\n    margin: 10px auto 0 auto;\n}\n.modify-user-img-container > img{\n    width:inherit;\n    height:inherit;\n\n}\n.modify-user-name-container{\n    margin: 10px auto 0 auto;\n    font-size:22px;\n    text-align:center;\n    background-color:#4bb;\n    color:white;\n}\n\ninput, label{\n    display:block;\n}")
 ;(function(){
 
 const Util = require("../util");
 const randomcolor = require("randomcolor");
 
+//Register Notification.vue component
 const Notification = require("./Notification.vue");
 const Vue = require("vue");
 Vue.component('Notification', Notification);
@@ -142,7 +193,11 @@ Vue.component('Notification', Notification);
 
 module.exports = {
     created(){
+
+        //from the store see if we should create or update the kontact
         const bCreateNotUpdate = this.$store.getters.CreateNotUpdate;
+
+        //if we should update a kontact grab the kontact information otherwise don't
         if(bCreateNotUpdate === false)
         {
             this.bCreateNotUpdate = false;
@@ -150,16 +205,26 @@ module.exports = {
             this.SetKontactToUpdate(oKontactToUpdate);
         }
         else
-        {
             this.bCreateNotUpdate = true;
-        }
     },
     data(){
         return {
+            //if we should display the notification ui
             bNotify : false,
+
+            //the message to display the notification ui with
             sNotifyMessage : "",
+
+            //the type of the notification ui (success, warning, error)
+            sNotifyType : "",
+
+            //if the 'confirm' display window is open 
             bDeleteConfirmDisplay : false,
+
+            //if we are creating a record or updating it
             bCreateNotUpdate : true,
+
+            //kontact client side object model
             oKontact : {
                 id : -1,
                 face : "/static/img/heads/head0.jpg",
@@ -199,34 +264,62 @@ module.exports = {
         }
     },
     computed: {
+        /**
+        * Creates fullname
+        */
         FullName()
         {
             return this.oKontact.firstname + ' ' + this.oKontact.lastname; 
         }
     },
     methods: {
+        /**
+        * Generate a random color
+        * @param {string} hue - the hue of the random color
+        * @param {string} luminosity - the luminosity of the random color (light, bright, dark)
+        * @return {string}  - random color in hex
+        */
         RandomColor(hue="", luminosity="light")
         {
             return randomcolor({  hue, luminosity  });
         },
+
+        /**
+        * Set the contact we should update by taking the default view model kontact object and combining it with the passed in kontact object to update
+        * @param {object} oKontact  - kontact to update
+        */
         SetKontactToUpdate(oKontact)
         {
             this.oKontact = Util.DeepMerge({}, this.oKontact, oKontact);
         },
+
+        /**
+        * Clicked done - move the view back to the main view after clearing the current contact reference
+        */
         Done()
         {
+            //clear the current contact reference to update if any
             this.$store.commit("ClearKontactReference");
+
+            //change views back to home
             this.$router.push({path : "/"});
         },
+
+        /**
+        * Create or update a kontact record record
+        */
         Save()
         {
+            //obtain contact to save
             let oKontactToSave = this.oKontact;
 
+            //if client side validation succeeds
             if(this.Validate(oKontactToSave))
             {
                 //create
                 if(this.bCreateNotUpdate === true)
                 {
+                    //tell the store to launch the Create kontact event, on success create notification UI
                     this.$store.dispatch("CreateKontact", oKontactToSave).then( (success) => {
                         this.Notify("Successfully Saved", 3000, "success");
                     }, (error) => {
@@ -236,6 +329,7 @@ module.exports = {
                 //update
                 else
                 {
+                    //tell the store to launch the Update kontact event, on success create notification UI
                     this.$store.dispatch("UpdateKontact", oKontactToSave).then( (success) => {
                         this.Notify("Successfully Updated", 3000, "success");
                     }, (error) => {
@@ -244,9 +338,16 @@ module.exports = {
                 }
             }
         },
+
+        /**
+        * Delete kontact record
+        */
         Delete()
         {
+            //obtain kontact to delete
             let oKontactToDelete = this.oKontact;
+
+            //tell store to launch delete kontact event, on success change path back to home
             this.$store.dispatch("DeleteKontact", oKontactToDelete).then( (success) =>{
                 this.$store.commit("SetJustDeletedRecord", true);
                 this.$router.push({path : "/"});
@@ -255,13 +356,21 @@ module.exports = {
             });
 
         },
+
+        /**
+        * Run soft validation on kontact object before saving and notify user of errors
+        * @param {object} oKontactToValidate - kontact object to validate
+        */
         Validate(oKontactToValidate)
         {
+            //if we're missing a first name or last name launch notification UI
             if(!oKontactToValidate.firstname || !oKontactToValidate.lastname)
             {
                 this.Notify("First Name and Last Name are required", 5000, "error");
                 return false;
             }
+            
+            //if we have a date of birth and it's in the incorrect format launch notification UI
             if( oKontactToValidate["date of birth"] )
             {
                 if( false == (/^\d{2}\/\d{2}\/\d{4}$/).test(oKontactToValidate["date of birth"]))
@@ -271,6 +380,7 @@ module.exports = {
                 }
             }
 
+            //if any of our media links are invalid launch notification UI
             const bValidMedia = Object.values(oKontactToValidate.media).every(_media => {
                 if(_media.link && _media.link.length > 0)
                 {
@@ -286,13 +396,20 @@ module.exports = {
                 return true;
             })
 
+            //if any media links are invalid return failure
             if(false === bValidMedia)
                 return false;
             
-
-
+            //assume kontact object is valid 
             return true;
         },
+        
+        /**
+        * Pop up the notification UI to notify the user of something
+        * @param {string} sMessage - the message the client should see
+        * @param {number} iDurationInMS - the duration the modal should exist in Milliseconds
+        * @param {string} sNotifyType - the type of notification (success, warning, error)
+        */
         Notify(sMessage, iDurationInMS, sNotifyType)
         {
             this.sNotifyMessage = sMessage;
@@ -310,7 +427,7 @@ module.exports = {
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"modify-template"},[_c('Notification',{attrs:{"bShow":_vm.bNotify,"sMessage":_vm.sNotifyMessage,"sType":_vm.sNotifyType}}),_vm._v(" "),_c('div',{staticClass:"modify-wrapper"},[_c('div',{staticClass:"modify-container"},[_c('div',{staticClass:"modify-header-container"},[_vm._v("\n                Kontacts\n            ")]),_vm._v(" "),_c('hr'),_vm._v(" "),_c('div',{staticClass:"modify-user-container",style:({backgroundColor:_vm.oKontact.color})},[_c('div',{staticClass:"modify-user-img-container"},[_c('img',{attrs:{"src":_vm.oKontact.face,"alt":""}})]),_vm._v(" "),_c('div',{staticClass:"modify-user-name-container"},[_vm._v("\n                    "+_vm._s(_vm.FullName)+"\n                ")])]),_vm._v(" "),_c('div',{staticClass:"modify-content-container"},[_c('div',{staticClass:"modify-input-container"},[_c('label',{attrs:{"for":"firstname"}},[_vm._v("*First Name")]),_vm._v(" "),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.oKontact.firstname),expression:"oKontact.firstname"}],attrs:{"id":"firstname","type":"text","placeholder":"First Name"},domProps:{"value":(_vm.oKontact.firstname)},on:{"input":function($event){if($event.target.composing){ return; }_vm.oKontact.firstname=$event.target.value}}})]),_vm._v(" "),_c('div',{staticClass:"modify-input-container"},[_c('label',{attrs:{"for":"lastname"}},[_vm._v("*Last Name")]),_vm._v(" "),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.oKontact.lastname),expression:"oKontact.lastname"}],attrs:{"id":"lastname","type":"text","placeholder":"Last Name"},domProps:{"value":(_vm.oKontact.lastname)},on:{"input":function($event){if($event.target.composing){ return; }_vm.oKontact.lastname=$event.target.value}}})]),_vm._v(" "),_c('div',{staticClass:"modify-input-container"},[_c('label',{attrs:{"for":"dateofbirth"}},[_vm._v("Date of Birth")]),_vm._v(" "),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.oKontact['date of birth']),expression:"oKontact['date of birth']"}],attrs:{"id":"dateofbirth","type":"text","placeholder":"Date Of Birth mm/dd/yyyy"},domProps:{"value":(_vm.oKontact['date of birth'])},on:{"input":function($event){if($event.target.composing){ return; }var $$exp = _vm.oKontact, $$idx = 'date of birth';if (!Array.isArray($$exp)){_vm.oKontact['date of birth']=$event.target.value}else{$$exp.splice($$idx, 1, $event.target.value)}}}})]),_vm._v(" "),_c('div',{staticClass:"modify-input-container"},[_c('label',{attrs:{"for":"zipcode"}},[_vm._v("Zip Code")]),_vm._v(" "),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.oKontact['zip-code']),expression:"oKontact['zip-code']"}],attrs:{"id":"zipcode","type":"text","placeholder":"Zip Code"},domProps:{"value":(_vm.oKontact['zip-code'])},on:{"input":function($event){if($event.target.composing){ return; }var $$exp = _vm.oKontact, $$idx = 'zip-code';if (!Array.isArray($$exp)){_vm.oKontact['zip-code']=$event.target.value}else{$$exp.splice($$idx, 1, $event.target.value)}}}})]),_vm._v(" "),_c('div',{staticClass:"modify-input-container"},[_c('label',{attrs:{"for":"facebook"}},[_vm._v("Facebook")]),_vm._v(" "),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.oKontact.media.facebook.link),expression:"oKontact.media.facebook.link"}],attrs:{"id":"facebook","type":"text","placeholder":"Facebook"},domProps:{"value":(_vm.oKontact.media.facebook.link)},on:{"input":function($event){if($event.target.composing){ return; }_vm.oKontact.media.facebook.link=$event.target.value}}})]),_vm._v(" "),_c('div',{staticClass:"modify-input-container"},[_c('label',{attrs:{"for":"twitter"}},[_vm._v("Twitter")]),_vm._v(" "),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.oKontact.media.twitter.link),expression:"oKontact.media.twitter.link"}],attrs:{"id":"twitter","type":"text","placeholder":"Twitter"},domProps:{"value":(_vm.oKontact.media.twitter.link)},on:{"input":function($event){if($event.target.composing){ return; }_vm.oKontact.media.twitter.link=$event.target.value}}})]),_vm._v(" "),_c('div',{staticClass:"modify-input-container"},[_c('label',{attrs:{"for":"linkedin"}},[_vm._v("LinkedIn")]),_vm._v(" "),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.oKontact.media.linkedin.link),expression:"oKontact.media.linkedin.link"}],attrs:{"id":"linkedin","type":"text","placeholder":"LinkedIn"},domProps:{"value":(_vm.oKontact.media.linkedin.link)},on:{"input":function($event){if($event.target.composing){ return; }_vm.oKontact.media.linkedin.link=$event.target.value}}})]),_vm._v(" "),_c('div',{staticClass:"modify-input-container"},[_c('label',{attrs:{"for":"youtube"}},[_vm._v("Youtube")]),_vm._v(" "),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.oKontact.media.youtube.link),expression:"oKontact.media.youtube.link"}],attrs:{"id":"youtube","type":"text","placeholder":"Youtube"},domProps:{"value":(_vm.oKontact.media.youtube.link)},on:{"input":function($event){if($event.target.composing){ return; }_vm.oKontact.media.youtube.link=$event.target.value}}})]),_vm._v(" "),_c('div',{staticClass:"modify-input-container"},[_c('label',{attrs:{"for":"whatsapp"}},[_vm._v("WhatsApp")]),_vm._v(" "),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.oKontact.media.whatsapp.link),expression:"oKontact.media.whatsapp.link"}],attrs:{"id":"whatsapp","type":"text","placeholder":"WhatsApp"},domProps:{"value":(_vm.oKontact.media.whatsapp.link)},on:{"input":function($event){if($event.target.composing){ return; }_vm.oKontact.media.whatsapp.link=$event.target.value}}})])]),_vm._v(" "),_c('div',{staticClass:"modify-action-container"},[_c('div',{staticClass:"modify-action-left-container"},[_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.bCreateNotUpdate === false),expression:"bCreateNotUpdate === false"}],staticClass:"modify-action-left-inner"},[_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.bDeleteConfirmDisplay===false),expression:"bDeleteConfirmDisplay===false"}]},[_c('button',{staticClass:"btn red",on:{"click":function($event){_vm.bDeleteConfirmDisplay = true}}},[_vm._v("Delete")])]),_vm._v(" "),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.bDeleteConfirmDisplay===true),expression:"bDeleteConfirmDisplay===true"}]},[_c('span',{staticClass:"text-big"},[_vm._v("Are you sure?")]),_vm._v(" "),_c('span',[_c('button',{staticClass:"btn red",on:{"click":function($event){_vm.Delete()}}},[_vm._v("Delete")])]),_vm._v(" "),_c('span',[_c('button',{staticClass:"btn grey",on:{"click":function($event){_vm.bDeleteConfirmDisplay = false}}},[_vm._v("No")])])])])]),_vm._v(" "),_c('div',{staticClass:"modify-action-right-container"},[_c('button',{staticClass:"btn green",on:{"click":function($event){_vm.Save()}}},[_vm._v("Save")]),_vm._v(" "),_c('button',{staticClass:"btn grey",on:{"click":function($event){_vm.Done()}}},[_vm._v("Done")])])])])])],1)}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"modify-template"},[_c('Notification',{attrs:{"bShow":_vm.bNotify,"sMessage":_vm.sNotifyMessage,"sType":_vm.sNotifyType}}),_vm._v(" "),_c('div',{staticClass:"modify-wrapper"},[_c('div',{staticClass:"modify-container"},[_c('div',{staticClass:"modify-header-container"},[_vm._v("\n                Kontact\n            ")]),_vm._v(" "),_c('hr'),_vm._v(" "),_c('div',{staticClass:"modify-user-container",style:({backgroundColor:_vm.oKontact.color})},[_c('div',{staticClass:"modify-user-img-container"},[_c('img',{attrs:{"src":_vm.oKontact.face,"alt":""}})]),_vm._v(" "),_c('div',{staticClass:"modify-user-name-container"},[_vm._v("\n                    "+_vm._s(_vm.FullName)+"\n                ")])]),_vm._v(" "),_c('div',{staticClass:"modify-content-container"},[_c('div',{staticClass:"modify-input-container"},[_c('label',{attrs:{"for":"firstname"}},[_vm._v("*First Name")]),_vm._v(" "),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.oKontact.firstname),expression:"oKontact.firstname"}],attrs:{"id":"firstname","type":"text","placeholder":"First Name"},domProps:{"value":(_vm.oKontact.firstname)},on:{"input":function($event){if($event.target.composing){ return; }_vm.oKontact.firstname=$event.target.value}}})]),_vm._v(" "),_c('div',{staticClass:"modify-input-container"},[_c('label',{attrs:{"for":"lastname"}},[_vm._v("*Last Name")]),_vm._v(" "),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.oKontact.lastname),expression:"oKontact.lastname"}],attrs:{"id":"lastname","type":"text","placeholder":"Last Name"},domProps:{"value":(_vm.oKontact.lastname)},on:{"input":function($event){if($event.target.composing){ return; }_vm.oKontact.lastname=$event.target.value}}})]),_vm._v(" "),_c('div',{staticClass:"modify-input-container"},[_c('label',{attrs:{"for":"dateofbirth"}},[_vm._v("Date of Birth")]),_vm._v(" "),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.oKontact['date of birth']),expression:"oKontact['date of birth']"}],attrs:{"id":"dateofbirth","type":"text","placeholder":"Date Of Birth mm/dd/yyyy"},domProps:{"value":(_vm.oKontact['date of birth'])},on:{"input":function($event){if($event.target.composing){ return; }var $$exp = _vm.oKontact, $$idx = 'date of birth';if (!Array.isArray($$exp)){_vm.oKontact['date of birth']=$event.target.value}else{$$exp.splice($$idx, 1, $event.target.value)}}}})]),_vm._v(" "),_c('div',{staticClass:"modify-input-container"},[_c('label',{attrs:{"for":"zipcode"}},[_vm._v("Zip Code")]),_vm._v(" "),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.oKontact['zip-code']),expression:"oKontact['zip-code']"}],attrs:{"id":"zipcode","type":"text","placeholder":"Zip Code"},domProps:{"value":(_vm.oKontact['zip-code'])},on:{"input":function($event){if($event.target.composing){ return; }var $$exp = _vm.oKontact, $$idx = 'zip-code';if (!Array.isArray($$exp)){_vm.oKontact['zip-code']=$event.target.value}else{$$exp.splice($$idx, 1, $event.target.value)}}}})]),_vm._v(" "),_c('div',{staticClass:"modify-input-container"},[_c('label',{attrs:{"for":"facebook"}},[_vm._v("Facebook")]),_vm._v(" "),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.oKontact.media.facebook.link),expression:"oKontact.media.facebook.link"}],attrs:{"id":"facebook","type":"text","placeholder":"Facebook"},domProps:{"value":(_vm.oKontact.media.facebook.link)},on:{"input":function($event){if($event.target.composing){ return; }_vm.oKontact.media.facebook.link=$event.target.value}}})]),_vm._v(" "),_c('div',{staticClass:"modify-input-container"},[_c('label',{attrs:{"for":"twitter"}},[_vm._v("Twitter")]),_vm._v(" "),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.oKontact.media.twitter.link),expression:"oKontact.media.twitter.link"}],attrs:{"id":"twitter","type":"text","placeholder":"Twitter"},domProps:{"value":(_vm.oKontact.media.twitter.link)},on:{"input":function($event){if($event.target.composing){ return; }_vm.oKontact.media.twitter.link=$event.target.value}}})]),_vm._v(" "),_c('div',{staticClass:"modify-input-container"},[_c('label',{attrs:{"for":"linkedin"}},[_vm._v("LinkedIn")]),_vm._v(" "),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.oKontact.media.linkedin.link),expression:"oKontact.media.linkedin.link"}],attrs:{"id":"linkedin","type":"text","placeholder":"LinkedIn"},domProps:{"value":(_vm.oKontact.media.linkedin.link)},on:{"input":function($event){if($event.target.composing){ return; }_vm.oKontact.media.linkedin.link=$event.target.value}}})]),_vm._v(" "),_c('div',{staticClass:"modify-input-container"},[_c('label',{attrs:{"for":"youtube"}},[_vm._v("Youtube")]),_vm._v(" "),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.oKontact.media.youtube.link),expression:"oKontact.media.youtube.link"}],attrs:{"id":"youtube","type":"text","placeholder":"Youtube"},domProps:{"value":(_vm.oKontact.media.youtube.link)},on:{"input":function($event){if($event.target.composing){ return; }_vm.oKontact.media.youtube.link=$event.target.value}}})]),_vm._v(" "),_c('div',{staticClass:"modify-input-container"},[_c('label',{attrs:{"for":"whatsapp"}},[_vm._v("WhatsApp")]),_vm._v(" "),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.oKontact.media.whatsapp.link),expression:"oKontact.media.whatsapp.link"}],attrs:{"id":"whatsapp","type":"text","placeholder":"WhatsApp"},domProps:{"value":(_vm.oKontact.media.whatsapp.link)},on:{"input":function($event){if($event.target.composing){ return; }_vm.oKontact.media.whatsapp.link=$event.target.value}}})])]),_vm._v(" "),_c('div',{staticClass:"modify-action-container"},[_c('div',{staticClass:"modify-action-left-container"},[_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.bCreateNotUpdate === false),expression:"bCreateNotUpdate === false"}],staticClass:"modify-action-left-inner"},[_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.bDeleteConfirmDisplay===false),expression:"bDeleteConfirmDisplay===false"}]},[_c('button',{staticClass:"btn red",on:{"click":function($event){_vm.bDeleteConfirmDisplay = true}}},[_vm._v("Delete")])]),_vm._v(" "),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.bDeleteConfirmDisplay===true),expression:"bDeleteConfirmDisplay===true"}]},[_c('span',{staticClass:"text-big"},[_vm._v("Are you sure?")]),_vm._v(" "),_c('span',[_c('button',{staticClass:"btn red",on:{"click":function($event){_vm.Delete()}}},[_vm._v("Delete")])]),_vm._v(" "),_c('span',[_c('button',{staticClass:"btn grey",on:{"click":function($event){_vm.bDeleteConfirmDisplay = false}}},[_vm._v("No")])])])])]),_vm._v(" "),_c('div',{staticClass:"modify-action-right-container"},[_c('button',{staticClass:"btn green",on:{"click":function($event){_vm.Save()}}},[_vm._v("Save")]),_vm._v(" "),_c('button',{staticClass:"btn grey",on:{"click":function($event){_vm.Done()}}},[_vm._v("Done")])])])])])],1)}
 __vue__options__.staticRenderFns = []
 if (module.hot) {(function () {  var hotAPI = require("vueify/node_modules/vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -357,7 +474,7 @@ if (module.hot) {(function () {  var hotAPI = require("vueify/node_modules/vue-h
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-1759bd58", __vue__options__)
   } else {
-    hotAPI.rerender("data-v-1759bd58", __vue__options__)
+    hotAPI.reload("data-v-1759bd58", __vue__options__)
   }
 })()}
 },{"vue":12,"vueify/lib/insert-css":13,"vueify/node_modules/vue-hot-reload-api":14}],5:[function(require,module,exports){
@@ -381,6 +498,7 @@ var RouterView = require("./Components/RouterView.vue");
 var store = require("./store");
 var router = require("./router");
 
+//create application with the addition of the router and store. Set up on 'RouterView' component for view swapping.
 const vueApp = new Vue({
   el : "#app",
   router,
@@ -416,24 +534,45 @@ Vue.use(Vuex);
 //configure state management
 const store = new Vuex.Store({
     
-    //expected state
     state: {
         lstKontact : [],
         oKontactToUpdate : {},
         bCreateNotUpdate : undefined,
         bJustDeletedRecord : false
     },
-    //standard getter interface
     getters: {
+        /**
+        * Retrieve the list of kontacts from state 
+        * @param {object} state - Vuex state object 
+        * @return {array} - list of kontact objects
+        */
         Kontacts(state){
             return state.lstKontact;
         },
+
+        /**
+        * Retrieve the a boolean that determines if the kontact within the Modify.vue component should be updated or created 
+        * @param {object} state - Vuex state object 
+        * @return {boolean} - should be created or not
+        */
         CreateNotUpdate(state){
             return state.bCreateNotUpdate;
         },
+        
+        /**
+        * Retrieve the kontact that should be updated within the Modify.vue component
+        * @param {object} state - Vuex state object 
+        * @return {oKontact} - the kontact that should be updated
+        */
         KontactToUpdate(state){
             return state.oKontactToUpdate;
         },
+
+        /**
+        * If a record has just been deleted, for the primary view for messaging
+        * @param {object} state - Vuex state object 
+        * @return {boolean}  - true if a record has just been deleted
+        */
         JustDeletedRecord(state)
         {
             return state.bJustDeletedRecord;
@@ -441,97 +580,150 @@ const store = new Vuex.Store({
     },
     //sync
     mutations : {
+        /**
+        * Set the boolean that identifies if a record has just been deleted
+        * @param {object} state - Vuex state object 
+        * @param {boolean} bDeleted - if the record has been deleted
+        */
         SetJustDeletedRecord(state, bDeleted)
         {
             state.bJustDeletedRecord = bDeleted;
         },
+
+        /**
+        * Set the list of kontacts
+        * @param {object} state - Vuex state object 
+        * @param {array} lstKontact - list of kontacts
+        */
         SetKontacts(state, lstKontact)
         {
             state.lstKontact = lstKontact;
         },
+        
+        /**
+        * Set the bool to identify if the Modify.vue component has handling a record that is to be updated or created
+        * @param {object} state - Vuex state object 
+        * @param {boolean} bCreateNotUpdate - boolean to know if a record is being created or updated
+        */
         SetCreateNotUpdate(state, bCreateNotUpdate)
         {
-                state.bCreateNotUpdate = bCreateNotUpdate;
+            state.bCreateNotUpdate = bCreateNotUpdate;
         },
+        
+        /**
+        * Set the kontact that is being updated
+        * @param {object} state - Vuex state object 
+        * @param {object} oKontactToUpdate - kontact object that's being updated
+        */
         SetKontactToUpdate(state, oKontactToUpdate)
         {
             state.bCreateNotUpdate = false;
             state.oKontactToUpdate = oKontactToUpdate;
         },
+        
+        /**
+        * Clear the kontact object for the next create/modify call to the Modify.vue component
+        * @param {object} state - Vuex state object 
+        */
         ClearKontactReference(state)
         {
             state.bCreateNotUpdate = undefined;
             state.oKontactToUpdate = {};
         }
     },
-    //async
     actions : {
-    FetchKontacts({commit})
-    {
-        return new Promise( (resolve, reject) => 
+
+        /**
+        * Fetch kontacts from server
+        * @param {Vuex.Commit?} commit  - reference to commit resource
+        */
+        FetchKontacts({commit})
         {
-            fetch("/kontacts", {method:"get"}).then( (response) =>
+            return new Promise( (resolve, reject) => 
             {
-                response.json().then((json) => {
-                commit("SetKontacts", json);
-                resolve(json);
+                fetch("/kontacts", {method:"get"}).then( (response) =>
+                {
+                    response.json().then((json) => {
+                    commit("SetKontacts", json);
+                    resolve(json);
+                    });
+                }, (error) => {
+                    console.error('error', error);
+                    reject(error);
                 });
-            }, (error) => {
-                console.error('error', error);
-                reject(error);
-            });
-        })
-    },
-    UpdateKontact({commit}, oKontact)
-    {
-        return new Promise( (resolve, reject) =>
+            })
+        },
+        
+        /**
+        * Update kontact call to the server
+        * @param {Vuex.Commit?} commit  - reference to commit resource
+        * @param {object} oKontact  - kontact object to update
+        */
+        UpdateKontact({commit}, oKontact)
         {
-            fetch(`/kontacts/${oKontact.id}`, {
-                method : "PUT", 
-                body : JSON.stringify(oKontact) 
-            }).then( (response) => {
-                resolve(true);
-            }, (error) => {
-                console.error("error ", error);
-                reject(error);
+            return new Promise( (resolve, reject) =>
+            {
+                fetch(`/kontacts/${oKontact.id}`, {
+                    method : "PUT", 
+                    body : JSON.stringify(oKontact) 
+                }).then( (response) => {
+                    resolve(true);
+                }, (error) => {
+                    console.error("error ", error);
+                    reject(error);
+                });
             });
-        });
-    },
-    DeleteKontact({commit}, oKontact)
-    {
-        return new Promise( (resolve, reject) =>
+        },
+
+        /**
+        * Request kontact deletion from the server
+        * @param {Vuex.Commit?} commit  - reference to commit resource
+        * @param {object} oKontact  - object to delete
+        */
+        DeleteKontact({commit}, oKontact)
         {
-            fetch(`/kontacts/${oKontact.id}`, {
-                method : "DELETE", 
-                body : JSON.stringify(oKontact) 
-            }).then( (response) => {
-                resolve(true);
-            }, (error) => {
-                console.error("error ", error);
-                reject(error);
+            return new Promise( (resolve, reject) =>
+            {
+                fetch(`/kontacts/${oKontact.id}`, {
+                    method : "DELETE", 
+                    body : JSON.stringify(oKontact) 
+                }).then( (response) => {
+                    resolve(true);
+                }, (error) => {
+                    console.error("error ", error);
+                    reject(error);
+                });
             });
-        });
-    },
-    CreateKontact({commit}, oKontact)
-    {
-        return new Promise( (resolve, reject) =>
+        },
+
+        /**
+        * Request kontact creation from the server
+        * @param {}  - 
+        * @return {}  - 
+        */
+        CreateKontact({commit}, oKontact)
         {
-            fetch(`/kontacts`, {
-                method : "POST", 
-                body : JSON.stringify(oKontact) 
-            }).then( (response) => {
-                resolve(true);
-            }, (error) => {
-                console.error("error ", error);
-                reject(error);
-            });
-        }); 
+            return new Promise( (resolve, reject) =>
+            {
+                fetch(`/kontacts`, {
+                    method : "POST", 
+                    body : JSON.stringify(oKontact) 
+                }).then( (response) => {
+                    resolve(true);
+                }, (error) => {
+                    console.error("error ", error);
+                    reject(error);
+                });
+            }); 
+        }
     }
-  }
-})
+});
 
 module.exports = store;
 },{"vue":12,"vuex":15}],9:[function(require,module,exports){
+/**
+* Client side utility class
+*/
 class Util
 {
     /**
@@ -544,9 +736,9 @@ class Util
 
     /**
      * Deep merge two objects. Note circular references will result in infinite recurision
-     * @param target - target to merge objects into
-     * @param ...sources - sources to merge, the last being the overwritting
-     * @returns object merged
+     * @param {object} target - target to merge objects into
+     * @param {object} ...sources - sources to merge, the last being the overwritting
+     * @returns {object} object merged
      */
     DeepMerge(target, ...sources) 
     {

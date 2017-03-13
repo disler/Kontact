@@ -1,3 +1,6 @@
+/**
+* Client side utility class
+*/
 class Util
 {
     /**
@@ -10,9 +13,9 @@ class Util
 
     /**
      * Deep merge two objects. Note circular references will result in infinite recurision
-     * @param target - target to merge objects into
-     * @param ...sources - sources to merge, the last being the overwritting
-     * @returns object merged
+     * @param {object} target - target to merge objects into
+     * @param {object} ...sources - sources to merge, the last being the overwritting
+     * @returns {object} object merged
      */
     DeepMerge(target, ...sources) 
     {

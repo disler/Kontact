@@ -2,6 +2,7 @@
     const Util = require("../util");
     const randomcolor = require("randomcolor");
 
+    //Register Notification.vue component
     const Notification = require("./Notification.vue");
     const Vue = require("vue");
     Vue.component('Notification', Notification);
@@ -9,7 +10,11 @@
 
     module.exports = {
         created(){
+
+            //from the store see if we should create or update the kontact
             const bCreateNotUpdate = this.$store.getters.CreateNotUpdate;
+
+            //if we should update a kontact grab the kontact information otherwise don't
             if(bCreateNotUpdate === false)
             {
                 this.bCreateNotUpdate = false;
@@ -17,16 +22,26 @@
                 this.SetKontactToUpdate(oKontactToUpdate);
             }
             else
-            {
                 this.bCreateNotUpdate = true;
-            }
         },
         data(){
             return {
+                //if we should display the notification ui
                 bNotify : false,
+
+                //the message to display the notification ui with
                 sNotifyMessage : "",
+
+                //the type of the notification ui (success, warning, error)
+                sNotifyType : "",
+
+                //if the 'confirm' display window is open 
                 bDeleteConfirmDisplay : false,
+
+                //if we are creating a record or updating it
                 bCreateNotUpdate : true,
+
+                //kontact client side object model
                 oKontact : {
                     id : -1,
                     face : "/static/img/heads/head0.jpg",
@@ -66,34 +81,62 @@
             }
         },
         computed: {
+            /**
+            * Creates fullname
+            */
             FullName()
             {
                 return this.oKontact.firstname + ' ' + this.oKontact.lastname; 
             }
         },
         methods: {
+            /**
+            * Generate a random color
+            * @param {string} hue - the hue of the random color
+            * @param {string} luminosity - the luminosity of the random color (light, bright, dark)
+            * @return {string}  - random color in hex
+            */
             RandomColor(hue="", luminosity="light")
             {
                 return randomcolor({  hue, luminosity  });
             },
+
+            /**
+            * Set the contact we should update by taking the default view model kontact object and combining it with the passed in kontact object to update
+            * @param {object} oKontact  - kontact to update
+            */
             SetKontactToUpdate(oKontact)
             {
                 this.oKontact = Util.DeepMerge({}, this.oKontact, oKontact);
             },
+
+            /**
+            * Clicked done - move the view back to the main view after clearing the current contact reference
+            */
             Done()
             {
+                //clear the current contact reference to update if any
                 this.$store.commit("ClearKontactReference");
+
+                //change views back to home
                 this.$router.push({path : "/"});
             },
+
+            /**
+            * Create or update a kontact record record
+            */
             Save()
             {
+                //obtain contact to save
                 let oKontactToSave = this.oKontact;
 
+                //if client side validation succeeds
                 if(this.Validate(oKontactToSave))
                 {
                     //create
                     if(this.bCreateNotUpdate === true)
                     {
+                        //tell the store to launch the Create kontact event, on success create notification UI
                         this.$store.dispatch("CreateKontact", oKontactToSave).then( (success) => {
                             this.Notify("Successfully Saved", 3000, "success");
                         }, (error) => {
@@ -103,6 +146,7 @@
                     //update
                     else
                     {
+                        //tell the store to launch the Update kontact event, on success create notification UI
                         this.$store.dispatch("UpdateKontact", oKontactToSave).then( (success) => {
                             this.Notify("Successfully Updated", 3000, "success");
                         }, (error) => {
@@ -111,9 +155,16 @@
                     }
                 }
             },
+
+            /**
+            * Delete kontact record
+            */
             Delete()
             {
+                //obtain kontact to delete
                 let oKontactToDelete = this.oKontact;
+
+                //tell store to launch delete kontact event, on success change path back to home
                 this.$store.dispatch("DeleteKontact", oKontactToDelete).then( (success) =>{
                     this.$store.commit("SetJustDeletedRecord", true);
                     this.$router.push({path : "/"});
@@ -122,13 +173,21 @@
                 });
 
             },
+
+            /**
+            * Run soft validation on kontact object before saving and notify user of errors
+            * @param {object} oKontactToValidate - kontact object to validate
+            */
             Validate(oKontactToValidate)
             {
+                //if we're missing a first name or last name launch notification UI
                 if(!oKontactToValidate.firstname || !oKontactToValidate.lastname)
                 {
                     this.Notify("First Name and Last Name are required", 5000, "error");
                     return false;
                 }
+                
+                //if we have a date of birth and it's in the incorrect format launch notification UI
                 if( oKontactToValidate["date of birth"] )
                 {
                     if( false == (/^\d{2}\/\d{2}\/\d{4}$/).test(oKontactToValidate["date of birth"]))
@@ -138,6 +197,7 @@
                     }
                 }
 
+                //if any of our media links are invalid launch notification UI
                 const bValidMedia = Object.values(oKontactToValidate.media).every(_media => {
                     if(_media.link && _media.link.length > 0)
                     {
@@ -153,13 +213,20 @@
                     return true;
                 })
 
+                //if any media links are invalid return failure
                 if(false === bValidMedia)
                     return false;
                 
-
-
+                //assume kontact object is valid 
                 return true;
             },
+            
+            /**
+            * Pop up the notification UI to notify the user of something
+            * @param {string} sMessage - the message the client should see
+            * @param {number} iDurationInMS - the duration the modal should exist in Milliseconds
+            * @param {string} sNotifyType - the type of notification (success, warning, error)
+            */
             Notify(sMessage, iDurationInMS, sNotifyType)
             {
                 this.sNotifyMessage = sMessage;
@@ -182,7 +249,7 @@
         <div class="modify-wrapper">
             <div class="modify-container">
                 <div class="modify-header-container">
-                    Kontacts
+                    Kontact
                 </div>
                 <hr>
 
@@ -303,6 +370,7 @@
         min-height:200px;
         margin: 10px auto 10px auto;
         padding:10px 0 10px 0;
+        box-shadow:2px 2px 8px #aaa;
         transition:1s all ease;
     }
 

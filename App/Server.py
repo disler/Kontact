@@ -1,7 +1,7 @@
 from flask import Flask, render_template, current_app, Response, request
-from DBInterface import DBInterface
-from Validator import Validator
-from WebUtil import WebUtil
+from server.DBInterface import DBInterface
+from server.Validator import Validator
+from server.WebUtil import WebUtil
 import json
 import ast
 
@@ -14,7 +14,7 @@ db = DBInterface()
 validator = Validator.Kontact()
 
 @app.route('/')
-def Home():
+def Home(): 
     """
         Landing page for application
     """

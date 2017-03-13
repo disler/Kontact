@@ -3,11 +3,21 @@
     module.exports = {
         props : ['kontact'],
         methods : {
+            /**
+            * A card has been clicked to be investigated, set it and change the view to the Modify.vue component
+            * @param {object} oKontact - kontact record to be possibly modified
+            */
             ClickCard(oKontact)
             {
                 this.$store.commit('SetKontactToUpdate', oKontact);
                 this.$router.push({path : "/modify"});
             },
+
+            /**
+            * Ensures a media url link contains 'http' as the prefix 
+            * @param {string} sLink - link to validate
+            * @return {string} string  - valid link
+            */
             EnsureValidLink(sLink)
             {
                 if(sLink.indexOf("http") > -1)
