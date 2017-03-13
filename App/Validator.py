@@ -1,10 +1,10 @@
 class Validator(object):
     """
-        Validation class wrapper
+        Mock validation class wrapper
     """
     class Kontact(object):
         """
-            Handles validation logic for 'kontacts'
+            Handles mock validation logic for 'kontacts'
         """
         def __init__(self):
             self.MAX_FIELD_LENGTH = 10
@@ -12,7 +12,7 @@ class Validator(object):
 
         def Validate(self, oRecord):
             """
-                Validate a kontact object for valid db writes
+                Mock validation a kontact object for valid db writes
             """
             #length check
             if len(oRecord) > self.MAX_FIELD_LENGTH:
